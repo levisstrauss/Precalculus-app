@@ -1,6 +1,5 @@
 import React from "react";
 import Styled from "styled-components/native";
-import { Button } from "react-native";
 
 
 class CoursesScreen extends React.Component {
