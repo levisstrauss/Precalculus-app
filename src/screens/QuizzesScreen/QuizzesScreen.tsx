@@ -241,12 +241,9 @@ import React from 'react';
 import { ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
-import QuizDetailScreen from "../QuizDetailScreen";
 
 const QuizzesScreen = () => {
-
   const navigation = useNavigation();
-
   const quizzes = [
     { id: '1', title: 'Functions', iconName: 'git-compare-outline' },
     { id: '2', title: 'Trigo', iconName: 'move-sharp' },
@@ -257,7 +254,6 @@ const QuizzesScreen = () => {
     { id: '7', title: 'Matrix', iconName: 'apps-sharp' },
   ];
 
-  //
   // @ts-ignore
   const renderButton = (quiz, index) => {
     // Calculate offset for snake-like alignment
@@ -274,12 +270,10 @@ const QuizzesScreen = () => {
       };
     }
 
-
     return (
       <TouchableOpacity
         key={quiz.id}
         style={[styles.button, additionalStyle]}
-        // onPress={() => console.log(`Quiz ${index + 1} pressed`)}
         // @ts-ignore
         onPress={() => navigation.navigate('Quiz', { quizId: quiz.id })}
       >
@@ -297,30 +291,6 @@ const QuizzesScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  // container: {
-  //   justifyContent: 'flex-start', // Align items to the start of the screen
-  //   alignItems: 'stretch', // Stretch items to fit the container
-  //   paddingVertical: 20, // Padding at the top and bottom of the scroll view
-  // },
-  // button: {
-  //   width: 100,
-  //   height: 100,
-  //   borderRadius: 50,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#f0f0f0',
-  //   marginVertical: 10, // Reduced vertical space between the buttons
-  //   // Same elevation and shadow styles as before
-  //   elevation: 3,
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 0, height: 2 },
-  //   shadowOpacity: 0.25,
-  //   shadowRadius: 3.84,
-  // },
-  // buttonText: {
-  //   fontSize: 18,
-  // },
-
   container: {
     flex: 1,
     justifyContent: 'space-evenly',
@@ -331,7 +301,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 20, // Space between buttons vertically
+    marginBottom: 15, // Space between buttons vertically
   },
   button: {
     width: 100,

@@ -11,16 +11,12 @@ class SectionScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
-
   componentDidMount() {
     StatusBar.setBarStyle("light-content", true);
   }
-
   componentWillUnmount() {
     StatusBar.setBarStyle("dark-content", true);
   }
-
-
   render() {
     // @ts-ignore
     const { route } = this.props;

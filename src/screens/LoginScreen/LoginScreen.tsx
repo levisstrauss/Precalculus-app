@@ -1,6 +1,7 @@
 import React from "react";
 import Styled from "styled-components";
 import { StatusBar } from "react-native";
+import Animated, {FadeInUp} from "react-native-reanimated";
 
 // @ts-ignore
 const LoginScreen = ({ navigation }) => {
@@ -17,30 +18,86 @@ const LoginScreen = ({ navigation }) => {
       <BackgroundImage source={require("../../assets/background.png")} />
       {/*light-content*/}
       <LightImages>
-        <LightImage1 source={require("../../assets/light.png")} />
-        <LightImage2 source={require("../../assets/light.png")} />
+        <Animated.Image
+          style={{height: 225, width: 90}}
+          source={require("../../assets/light.png")}
+          entering={
+          FadeInUp.delay(200)
+            .duration(1000)
+            .springify()
+          }
+        />
+        <Animated.Image
+          style={{height: 160, width: 65}}
+          source={require("../../assets/light.png")}
+          entering={
+            FadeInUp.delay(400)
+              .duration(1000)
+              .springify()
+          }
+        />
       </LightImages>
+      <Animated.Text
+        style={{
+          color: "white",
+          fontSize: 34,
+          fontWeight: "bold",
+          position: "absolute",
+          marginLeft: "35%",
+          marginTop: "70%",
+        }}
+        entering={FadeInUp.duration(1000).springify()}
+      >
+        Login
+      </Animated.Text>
       {/*Title and form*/}
       <ContentWrapper>
         <Content>
-          <Title>Pre-Calculus</Title>
-          <Subtitle>Join the fun and start learning now!</Subtitle>
+          <Animated.Text
+          style={{
+            fontSize: 28,
+            fontWeight: "bold",
+            color: "black",
+            }}
+          entering={FadeInUp.duration(1000).springify()}
+          >
+            Pre-Calculus
+          </Animated.Text>
+          <Animated.Text
+            style={{
+              fontSize: 18,
+              color: "black",
+              textAlign: "center",
+              marginVertical: 10,
+            }}
+            entering={FadeInUp.duration(1000).springify()}
+          >
+            Join the fun and start learning now!
+          </Animated.Text>
         </Content>
-
         <FormContainer>
           <Text>Email Address* or Username* </Text>
-          <StyledInput placeholder="Enter your email or password"/>
+          <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
+             <StyledInput placeholder="Enter your email or password"/>
+          </Animated.View>
           <Text>Password*</Text>
-          <StyledInput placeholder="Enter your password"/>
+          <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
+             <StyledInput placeholder="Enter your password"/>
+          </Animated.View>
         </FormContainer>
         <SubmitButton onPress={handleLogin}>
-          <ButtonText>Sign In</ButtonText>
+          <Animated.View entering={FadeInUp.delay(400).duration(1000).springify()}>
+             <ButtonText>Login</ButtonText>
+          </Animated.View>
         </SubmitButton>
-
         <SignupContainer>
-          <SignUpText>Don't have an account yet?</SignUpText>
+          <Animated.View entering={FadeInUp.delay(500).duration(1000).springify()}>
+            <SignUpText>Don't have an account yet?</SignUpText>
+          </Animated.View>
             <SignupButton onPress={handleSignup}>
-              <SignupButtonText>Sign Up</SignupButtonText>
+              <Animated.View entering={FadeInUp.delay(600).duration(1000).springify()}>
+                 <SignupButtonText>Sign Up</SignupButtonText>
+              </Animated.View>
             </SignupButton>
         </SignupContainer>
       </ContentWrapper>
@@ -50,21 +107,19 @@ const LoginScreen = ({ navigation }) => {
 
 export default LoginScreen;
 
-
 // @ts-ignore
 const Container = Styled.View`
   flex: 1;
   background-color: #ffffff;
+  position: relative;
 `;
-
-
 // @ts-ignore
 const ContentWrapper = Styled.View`
   justify-content: center;
   color: black;
   margin-left:  15px;
   margin-right: 15px;
-   margin-top: 110%;
+  margin-top: 110%;
 `;
 
 // @ts-ignore
@@ -79,30 +134,6 @@ const LightImages = Styled.View`
   justify-content: space-around;
   width: 100%;
   position: absolute;
-`;
-// @ts-ignore
-const LightImage1 = Styled.Image`
-  height: 225px;
-  width: 90px;
-`;
-
-// @ts-ignore
-const LightImage2 = Styled.Image`
-  height: 160px;
-  width: 65px;
-`;
-
-// @ts-ignore
-const Title = Styled.Text`
-   font-size: 28px;
-   font-weight: bold;
-   color: black;
-`;
-
-// @ts-ignore
-const Subtitle = Styled.Text`
-  font-size: 18px;
-  color: black;
 `;
 
 // @ts-ignore
@@ -124,9 +155,7 @@ const StyledInput = Styled.TextInput`
   border-width: 1px;
   border-color: grey;
   border-radius: 5px;
-  padding-horizontal: 10px;
-
-       
+  padding-horizontal: 10px;  
 `;
 
 // @ts-ignore
@@ -144,8 +173,6 @@ const Text = Styled.Text`
   margin-bottom: 5px;
   font-weight: bold;
 `;
-
-
 // @ts-ignore
 const ButtonText = Styled.Text`
   color: white;
@@ -180,3 +207,5 @@ const SignupButtonText = Styled.Text`
   font-weight: bold;
   margin-left: 5px;
 `;
+
+

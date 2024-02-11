@@ -8,6 +8,9 @@ interface MenuItemProps {
   title: string;
   text: string;
 }
+
+
+// @ts-ignore
 const MenuItem = ({icon, title, text}: MenuItemProps) => (
   <Container>
     <IconView>
