@@ -1,71 +1,78 @@
 export default [
   {
+    id: "q0",
+    type: "FILL_IN_THE_BLANK",
+    text: "Una mina, una",
+    options: ["yo", "la", "mujer", "el"],
+    correct: "mujer",
+  },
+  {
     id: "q1",
     type: "IMAGE_MULTIPLE_CHOICE",
-    question: 'Which of these is "the glass"?',
+    question: 'What is the derivative of "X" ?',
     options: [
       {
         id: "option1",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/cup.png",
-        text: "la taza",
+        text: "xe^x",
       },
       {
         id: "option2",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/glass.png",
-        text: "el vaso",
+        text: "e^x",
         correct: true,
       },
       {
         id: "option3",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/milk.png",
-        text: "la leche",
+        text: "2xe^x",
       },
       {
         id: "option4",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/coffee.png",
-        text: "el café",
+        text: "x^2e^x",
       },
     ],
   },
   {
     id: "q2",
     type: "OPEN_ENDED",
-    text: "Yo soy un hombre",
-    answer: "I am a man",
+    text: "Is derivative and integral the same?",
+    answer: "No",
   },
   {
     id: "q3",
     type: "IMAGE_MULTIPLE_CHOICE",
-    question: 'Which of these is "the coffee"?',
+    question: 'What is the derivative of lnx"?',
     options: [
       {
         id: "option4",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/coffee.png",
-        text: "el café",
+        text: "1/x",
         correct: true,
       },
       {
         id: "option1",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/cup.png",
-        text: "la taza",
+        text: "2x",
       },
       {
         id: "option3",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/milk.png",
-        text: "la leche",
+        text: "3xlnx",
       },
       {
         id: "option2",
         image:
           "https://fsmd-assets.s3.eu-west-1.amazonaws.com/duolingo/images/glass.png",
-        text: "el vaso",
+        text: "e^x",
       },
     ],
   },
@@ -147,28 +154,3 @@ export default [
     ],
   },
 ];
-
-
-// {
-//   id: "q0",
-//     type: "FILL_IN_THE_BLANK",
-//   parts: [
-//   {
-//     text: "la",
-//     isBlank: true,
-//   },
-//   {
-//     text: "nino",
-//     isBlank: true,
-//   },
-//   {
-//     text: "el",
-//     isBlank: true,
-//   },
-//   {
-//     text: "nina",
-//     isBlank: true,
-//   },
-// ],
-//   options: ["la", "el", "nina", "nino", "ella"],
-// },

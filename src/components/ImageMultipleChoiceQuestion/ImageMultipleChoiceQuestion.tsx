@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Alert, Text } from "react-native";
 import ImageOption from "../ImageOption";
 import Button from "../Button";
 import PropTypes from "prop-types";
@@ -19,6 +18,7 @@ const ImageMultipleChoiceQuestion = ({question, onCorrect, onWrong}) => {
       onWrong();
     }
   };
+
   return (
     <>
       <Title>{question.question}</Title>

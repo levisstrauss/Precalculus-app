@@ -16,7 +16,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Feed"
+          initialRouteName="GettingStarted"
           screenOptions={{headerShown: true}}
         >
         <Stack.Screen

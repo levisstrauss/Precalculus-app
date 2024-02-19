@@ -92,6 +92,7 @@ class Menu extends React.Component {
               icon={item.icon}
               title={item.title}
               text={item.text}
+              onPress={() => console.log("pressed")}
             />
           ))}
         </Content>

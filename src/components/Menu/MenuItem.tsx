@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { TouchableOpacity } from "react-native";
 
 
 interface MenuItemProps {
@@ -11,8 +12,8 @@ interface MenuItemProps {
 
 
 // @ts-ignore
-const MenuItem = ({icon, title, text}: MenuItemProps) => (
-  <Container>
+const MenuItem = ({icon, title, text, onPress}: MenuItemProps) => (
+  <Container onPress={onPress}>
     <IconView>
       <Ionicons name={icon} size={24} color="#546bfb" />
     </IconView>
@@ -26,7 +27,7 @@ const MenuItem = ({icon, title, text}: MenuItemProps) => (
 export default MenuItem;
 
 // @ts-ignore
-const Container = styled.View`
+const Container = styled(TouchableOpacity)`
   flex-direction: row;
   margin: 15px 0;
 `;

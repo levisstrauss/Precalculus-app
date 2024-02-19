@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import questions from "../../assets/data/allQuestions";
 import Header from "../../components/Header";
+import FillInTheBlank from "../../components/FillInTheBlank";
 
 const QuizDetailScreen = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -72,7 +73,7 @@ const QuizDetailScreen = () => {
       }
 
       setHasLoaded(true);
-  }
+  };
 
   if (!hasLoaded) {
     return (<ActivityIndicator size="large" color="#0000ff" />);
@@ -80,7 +81,18 @@ const QuizDetailScreen = () => {
 
   return (
     <Container>
-      <Header  progress={currentQuestionIndex / questions.length} lives={lives}/>
+      <Header
+        progress={currentQuestionIndex / questions.length}
+        lives={lives}
+      />
+      {currentQuestion.type === "FILL_IN_THE_BLANK" && (
+        <FillInTheBlank
+        question={currentQuestion}
+        onCorrect={onCorrect}
+        onWrong={onWrong}
+      />
+      )}
+
       {currentQuestion.type === "IMAGE_MULTIPLE_CHOICE" && (
         <ImageMultipleChoiceQuestion
           question={currentQuestion}
