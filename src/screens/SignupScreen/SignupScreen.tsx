@@ -1,52 +1,102 @@
-import React from "react";
-import Styled from "styled-components";
-import { StatusBar } from "react-native";
-import Animated, { FadeInUp } from "react-native-reanimated";
+import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
+import Animated, { FadeInUp } from 'react-native-reanimated';
+import { getDatabase, ref, set } from 'firebase/database';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirebaseApp } from '../../utils/firebaseHelper';
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import Styled from 'styled-components';
 
-// @ts-ignore
+import Loading from '../../components/Loading';
+import Success from '../../components/Success';
+
+
+// Validation schema
+const schema = yup.object({
+  username: yup.string().required('Username is required').min(6, 'Username must be at least 6 characters long'),
+  email: yup.string().required('Email is required').email('Invalid email format'),
+  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters long'),
+  confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords do not match'),
+});
+
+//@ts-ignore
 const SignupScreen = ({ navigation }) => {
-  const handleSignup = () => {
-    navigation.push('Login');
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [firebaseError, setFirebaseError] = React.useState('');
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  //@ts-ignore
+  const handleSignup = async (data) => {
+    setIsLoading(true);
+    try {
+      const auth = getAuth(getFirebaseApp());
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const db = getDatabase(getFirebaseApp());
+      await set(ref(db, 'users/' + userCredential.user.uid), {
+        username: data.username,
+        unlockedQuizzes: ["1"],
+        points: 0,
+        quizCompleted: 0,
+        city: "City",
+        state: "State",
+        bio: "Something about yourself...",
+      });
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        navigation.navigate('Login');
+        reset(); // Reset form fields
+        setFirebaseError(''); // Reset Firebase error message at the start of a new signup attempt
+      }, 2000);
+
+   } catch (error) {
+     console.error('Signup failed:', error);
+      //@ts-ignore
+      setFirebaseError(mapFirebaseErrorToMessage(error.message)); // Set the Firebase error message for display
+   } finally {
+      setIsLoading(false);
+   }
   };
+  const firebaseErrorMessages = {
+    'auth/invalid-email': 'The email address is badly formatted.',
+    'auth/user-disabled': 'The user account has been disabled by an administrator.',
+    'auth/user-not-found': 'No user found with this email.',
+    'auth/wrong-password': 'The password is invalid or the user does not have a password.',
+    'auth/email-already-in-use': 'The email address is already in use by another account.',
+    'auth/operation-not-allowed': 'Password sign-in is disabled for this project.',
+    'auth/weak-password': 'The password must be 6 characters long or more.',
+    'auth/too-many-requests': 'We have blocked all requests from this device due to unusual activity. Try again later.',
+    'auth/username-already-in-use': 'The username is already in use by another account.',
+  };
+
+  //@ts-ignore
+  const mapFirebaseErrorToMessage = (errorCode) => {
+    //@ts-ignore
+    return firebaseErrorMessages[errorCode] || 'An unexpected error occurred. Please try again.';
+  };
+
   return (
     <Container>
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar barStyle="light-content" />
       <BackgroundImage source={require("../../assets/background.png")} />
-      {/*light-content*/}
       <LightImages>
         <Animated.Image
-          style={{height: 225, width: 90}}
+          style={{ height: 225, width: 90 }}
           source={require("../../assets/light.png")}
-          entering={
-            FadeInUp.delay(200)
-              .duration(1000)
-              .springify()
-          }
+          entering={FadeInUp.delay(200).duration(1000).springify()}
         />
         <Animated.Image
-          style={{height: 160, width: 65}}
+          style={{ height: 160, width: 65 }}
           source={require("../../assets/light.png")}
-          entering={
-            FadeInUp.delay(400)
-              .duration(1000)
-              .springify()
-          }
+          entering={FadeInUp.delay(400).duration(1000).springify()}
         />
       </LightImages>
-      <Animated.Text
-        style={{
-          color: "white",
-          fontSize: 34,
-          fontWeight: "bold",
-          position: "absolute",
-          marginLeft: "35%",
-          marginTop: "70%",
-        }}
-        entering={FadeInUp.duration(1000).springify()}
-      >
-        Sign Up
-      </Animated.Text>
-      {/*Title and form*/}
       <ContentWrapper>
         <Content>
           <Animated.Text
@@ -69,44 +119,82 @@ const SignupScreen = ({ navigation }) => {
             }}
             entering={FadeInUp.duration(1000).springify()}
           >
-           Sign up and start learning now!
+            Sign up and start learning now!
           </Animated.Text>
         </Content>
-
         <FormContainer>
-          <Text>Username*</Text>
-          <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
-             <StyledInput placeholder="Enter your Username"/>
-          </Animated.View>
-          <Text>Email Address*</Text>
-          <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
-             <StyledInput placeholder="Enter your email or password"/>
-          </Animated.View>
-          <Text>Password*</Text>
-          <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
-             <StyledInput placeholder="Enter your password"/>
-          </Animated.View>
-          <Text>Repeat Password*</Text>
-          <Animated.View entering={FadeInUp.delay(200).duration(1000).springify()}>
-             <StyledInput placeholder="Enter your password"/>
-          </Animated.View>
+          {firebaseError && <ErrorMessage>{firebaseError}</ErrorMessage>}
+          <Controller
+            name="username"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <StyledInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Username"
+                autoCapitalize="none"
+              />
+            )}
+          />
+          {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
+
+          <Controller
+            name="email"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <StyledInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Email Address"
+                autoCapitalize="none"
+              />
+            )}
+          />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+          <Controller
+            name="password"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <StyledInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Password"
+                secureTextEntry={true}
+              />
+            )}
+          />
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+
+          <Controller
+            name="confirmPassword"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <StyledInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Repeat Password"
+                secureTextEntry={true}
+              />
+            )}
+          />
+          {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>}
         </FormContainer>
-        <SubmitButton onPress={handleSignup}>
-          <Animated.View entering={FadeInUp.delay(400).duration(1000).springify()}>
-             <ButtonText>Sign Up</ButtonText>
-          </Animated.View>
+        <SubmitButton onPress={handleSubmit(handleSignup)}>
+          <ButtonText>Sign Up</ButtonText>
         </SubmitButton>
         <SignupContainer>
-          <Animated.View entering={FadeInUp.delay(500).duration(1000).springify()}>
-              <SignUpText>Already have an account then - </SignUpText>
-          </Animated.View>
-          <SignupButton onPress={handleSignup}>
-          <Animated.View entering={FadeInUp.delay(600).duration(1000).springify()}>
-             <SignupButtonText>Log In</SignupButtonText>
-          </Animated.View>
+          <SignUpText>Already have an account then - </SignUpText>
+          <SignupButton onPress={() => navigation.navigate('Login')}>
+            <SignupButtonText>Log In</SignupButtonText>
           </SignupButton>
         </SignupContainer>
       </ContentWrapper>
+      {isLoading && <Loading isActive={isLoading} />}
+      {isSuccess && <Success isActive={isSuccess} />}
     </Container>
   );
 };
@@ -117,17 +205,16 @@ export default SignupScreen;
 // @ts-ignore
 const Container = Styled.View`
   flex: 1;
-  background-color: #ffffff;
+  background-color: white;
 `;
 
 
 // @ts-ignore
 const ContentWrapper = Styled.View`
   justify-content: center;
-  color: black;
-  margin-left:  15px;
-  margin-right: 15px;
+  margin: 15px;
   margin-top: 95%;
+
 `;
 
 // @ts-ignore
@@ -147,45 +234,37 @@ const LightImages = Styled.View`
 // @ts-ignore
 const Content = Styled.View`
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 // @ts-ignore
 const FormContainer = Styled.View`
-     margin-bottom: 15px;
-     justify-content: space-between;
+     margin-bottom: 10px;
+
 `;
 
 // @ts-ignore
 const StyledInput = Styled.TextInput`
-  height: 35px;
-  margin-bottom: 5px;
+  height: 40px;
+  margin-bottom: 12px;
   border-width: 1px;
   border-color: grey;
   border-radius: 5px;
-  padding-horizontal: 10px;
+  padding: 10px;
 `;
 
 // @ts-ignore
 const SubmitButton = Styled.TouchableOpacity`
   background-color: #546bfb;
-  padding-vertical: 12px;
-  color: white;
-  font-size: 16px;
-  text-align: center;
-  border-radius: 20px;
+  padding: 10px;
+  align-items: center;
+  border-radius: 5px;
 `;
-// @ts-ignore
-const Text = Styled.Text`
-  font-size: 16px;
-  margin-bottom: 2px;
-  font-weight: bold;
-`;
+
 // @ts-ignore
 const ButtonText = Styled.Text`
-  color: white;
+   color: white;
   font-size: 18px;
-  text-align: center;
 `;
 
 // @ts-ignore
@@ -193,6 +272,7 @@ const SignupContainer = Styled.View`
   margin-top: 15px;
   align-items: center;
   flex-direction: row;
+  justify-content: center;
 `;
 
 // @ts-ignore
@@ -215,3 +295,12 @@ const SignupButtonText = Styled.Text`
   font-weight: bold;
   margin-left: 5px;
 `;
+
+// @ts-ignore
+const ErrorMessage = Styled.Text`
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+`;
+
+

@@ -17,7 +17,6 @@ const Button = ({text, onPress, disabled}) => {
         alignItems: 'center',
         borderRadius: 10,
         borderBottomWidth: 5,
-        //borderColor: '#57A600',
         backgroundColor: disabled ? 'lightgrey' : '#58CC02',
         borderColor: disabled ? 'grey' : '#57A600',
       }}

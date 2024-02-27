@@ -13,7 +13,8 @@ class Loading extends React.Component {
     opacity: new Animated.Value(0),
   };
 
-  componentDidUpdate() {
+  componentDidMount() {
+    // @ts-ignore
     if (this.props.isActive) {
       Animated.timing(this.state.top, {
         toValue: 0, duration: 0,

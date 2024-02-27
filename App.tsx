@@ -3,17 +3,11 @@ import { createStore } from 'redux';
 import {Provider} from 'react-redux'
 import Navigation from "./src/components/Navigation";
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-
-//
-// const client = new ApolloClient({
-//   uri: "https://graphql.contentful.com/content/v1/spaces/ldcl3ayg0mhx",
-//    credentials: "same-origin",
-//    headers: {
-//     Authorization: `Bearer 93f3808c25c1f5bdb95476ca8576c6eaa12b5587efb956efb242ceead7cb3840`
-//   },
-//   cache: new InMemoryCache()
-// });
-
+import{getFirebaseApp} from "./src/utils/firebaseHelper";
+import { UserProvider } from "./src/UserContext/UserContext.tsx";
+import uploadQuizzes from "./src/data";
+// Initialize Firebase
+getFirebaseApp();
 
 
 const client = new ApolloClient({
@@ -58,11 +52,13 @@ const store = createStore(reducer);
 //------ App ----------------
 const App = () => {
   return (
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <Navigation />
-      </Provider>
-    </ApolloProvider>
+    <UserProvider>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <Navigation />
+        </Provider>
+      </ApolloProvider>
+    </UserProvider>
   );
 }
 export default App;

@@ -1,25 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import  styled from 'styled-components/native';
-
-
-const leaderboardData = [
-  { id: '1', rank: 1, name: 'Zakaria', score: '50', profileImage: 'https://via.placeholder.com/50'},
-  { id: '2', rank: 2, name: 'Codemon', score: '45', profileImage: 'https://via.placeholder.com/50' },
-  { id: '3', rank: 3, name: 'Prad', score: '40', profileImage: 'https://via.placeholder.com/50' },
-  { id: '4', rank: 4, name: 'Hamad', score: '35', profileImage: 'https://via.placeholder.com/50' },
-  { id: '5', rank: 5, name: 'Josephine', score: '30', profileImage: 'https://via.placeholder.com/50' },
-  { id: '6', rank: 6, name: 'Karim', score: '25', profileImage: 'https://via.placeholder.com/50' },
-  { id: '7', rank: 7, name: 'Joel', score: '20', profileImage: 'https://via.placeholder.com/50' },
-  { id: '8', rank: 8, name: 'Leslie', score: '15', profileImage: 'https://via.placeholder.com/50' },
-  { id: '9', rank: 9, name: 'Daniel', score: '10', profileImage: 'https://via.placeholder.com/50' },
-  { id: '10', rank: 10, name: 'Ben', score: '50', profileImage: 'https://via.placeholder.com/50' },
-];
-
+import { getDatabase, ref, query, orderByChild, limitToLast, onValue } from 'firebase/database';
 const LeaderboardScreen = () => {
+  const [leaderboardData, setLeaderboardData] = useState([]);
+
+  // useEffect(() => {
+  //   const db = getDatabase();
+  //   const leaderboardRef = query(ref(db, 'users'), orderByChild('points'), limitToLast(10));
+  //
+  //   const unsubscribe = onValue(leaderboardRef, (snapshot) => {
+  //     // @ts-ignore
+  //     const leaderboardArray = [];
+  //     snapshot.forEach((childSnapshot) => {
+  //       const userData = childSnapshot.val();
+  //       leaderboardArray.push({
+  //         id: childSnapshot.key,
+  //         name: userData.username,
+  //         score: userData.points,
+  //         profileImage: userData.profileImageUrl || 'https://via.placeholder.com/50',
+  //       });
+  //     });
+  //     // Since we are using limitToLast, the array is in ascending order by default
+  //     // @ts-ignore
+  //     leaderboardArray.reverse(); // Reverse to make it descending
+  //     // @ts-ignore
+  //     setLeaderboardData(leaderboardArray);
+  //   });
+  //
+  //   return () => unsubscribe(); // Detach listener when component unmounts
+  // }, []);
+
+  useEffect(() => {
+    const db = getDatabase();
+    // Query the 'users' collection directly for top 10 users by points
+    const leaderboardRef = query(ref(db, 'users'), orderByChild('points'), limitToLast(10));
+
+    const unsubscribeLeaderboard = onValue(leaderboardRef, (snapshot) => {
+      // @ts-ignore
+      const leaderboardArray = [];
+      snapshot.forEach((childSnapshot) => {
+        const userData = childSnapshot.val();
+        leaderboardArray.push({
+          id: childSnapshot.key,
+          name: userData.username || 'Anonymous',
+          score: userData.points || 0,
+          profileImage: userData.profileImageUrl || 'https://cl.ly/55da82beb939/download/avatar-default.jpg',
+        });
+      });
+      // Since we are using limitToLast, the array is in ascending order by default
+      // @ts-ignore
+      leaderboardArray.reverse(); // Reverse to make it descending
+      // @ts-ignore
+      setLeaderboardData(leaderboardArray);
+    });
+
+    return () => unsubscribeLeaderboard();
+  }, []);
+
   // @ts-ignore
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <UserRow>
-      <Rank>{item.rank}</Rank>
+      <Rank>{index + 1}</Rank>
       <ProfileImage source={{ uri: item.profileImage }} />
       <UserName>{item.name}</UserName>
       <Score>{item.score}</Score>

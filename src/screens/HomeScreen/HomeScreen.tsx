@@ -10,41 +10,7 @@ import { connect } from "react-redux";
 import Avatar from "../../components/Avatar";
 import { gql } from "@apollo/client";
 import { Query } from "@apollo/client/react/components";
-import ModalLogin from "../../components/ModalLogin";
-
-// const CardsQuery = gql`
-//   {
-//   cardsCollection{
-//     items{
-//       title
-//       subtitle
-//       image{
-//         title
-//         description
-//         contentType
-//         fileName
-//         size
-//         url
-//         width
-//         height
-//       }
-//       subtitle
-//       caption
-//       logo{
-//         title
-//         description
-//         contentType
-//         fileName
-//         size
-//         url
-//         width
-//         height
-//       }
-//     }
-//   }
-// }
-// `;
-
+import { UserContext } from "../../UserContext/UserContext";
 
 const CardsQuery = gql`
     {
@@ -96,11 +62,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 class HomeScreen extends React.Component {
-
   state = {
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1)
   };
+
 
   componentDidMount() {
     StatusBar.setBarStyle("dark-content", true);
@@ -150,7 +116,7 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <RootView>
-        <Menu />
+        <Menu/>
         <AnimatedContainer
           style={{
             transform: [{ scale: this.state.scale }],
@@ -171,8 +137,15 @@ class HomeScreen extends React.Component {
                 >
                   <Avatar />
                 </TouchableOpacity>
-                <Title>welcome back</Title>
-                <Name>Zakaria</Name>
+                <Content>
+                  <Title>Welcome back</Title>
+                  <UserContext.Consumer>
+                    {user => (
+                      //@ts-ignore
+                      <Name>{user ? user.username : 'Guest'}</Name>
+                    )}
+                  </UserContext.Consumer>
+                </Content>
                 <Ionicons
                   name="notifications"
                   size={25}
@@ -257,7 +230,6 @@ class HomeScreen extends React.Component {
             </ScrollView>
           </SafeAreaView>
         </AnimatedContainer>
-        {/*<ModalLogin />*/}
       </RootView>
    );
   }
@@ -332,6 +304,10 @@ const TitleBar = styled.View`
   width: 100%;
   margin-top: 50px;
   padding-left: 80px;
+`;
+// @ts-ignore
+const Content = styled.View`
+  padding-left: 10px;
 `;
 
 

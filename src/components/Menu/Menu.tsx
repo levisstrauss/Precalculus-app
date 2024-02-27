@@ -1,110 +1,127 @@
-import React, { useEffect, useRef } from 'react';
-import styled from "styled-components/native";
-import { Animated, useWindowDimensions, TouchableOpacity, Dimensions } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { Animated, Dimensions, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MenuItem from "./MenuItem";
 import { connect } from "react-redux";
+import styled from "styled-components/native";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = screenWidth > 500 ? 500 : screenWidth;
-
 const screenHeight = Dimensions.get("window").height;
+import { getAuth, signOut } from "firebase/auth";
+import { getFirebaseApp } from "../../utils/firebaseHelper";
+import { UserContext } from "../../UserContext/UserContext";
 
-
-//------- Map State To Props -----------------
-// @ts-ignore
-function mapStateToProps(state) {
-  return { action: state.action };
+interface MenuProps {
+  icon: string;
+  title: string;
+  text: string;
+  onPress: () => void;
 }
 
 // @ts-ignore
-function mapDispatchToProps(dispatch) {
-  return {
-    closeMenu: () =>
-      dispatch({
-        type: "CLOSE_MENU"
-      })
-  };
-}
+const Menu = () => {
+  const navigation = useNavigation();
+  const [top] = useState(new Animated.Value(screenHeight));
+  // @ts-ignore
+  const action = useSelector(state => state.action); // Assuming you have a Redux setup
+  const dispatch = useDispatch();
+  useEffect(() => {
+    toggleMenu();
+  }, [action]);
 
-
-
-
-class Menu extends React.Component {
-  state = {
-    top: new Animated.Value(screenHeight)
-  };
-
-  componentDidMount() {
-    this.toggleMenu();
-  }
-
-  componentDidUpdate() {
-    this.toggleMenu();
-  }
-
-  toggleMenu = () => {
-    // @ts-ignore
-    if (this.props.action == "openMenu") {
-      Animated.spring(this.state.top, {
+  const toggleMenu = () => {
+    if (action === "openMenu") {
+      Animated.spring(top, {
         toValue: 54,
         useNativeDriver: false,
       }).start();
-    }
-
-    // @ts-ignore
-    if (this.props.action == "closeMenu") {
-      Animated.spring(this.state.top, {
+    } else if (action === "closeMenu") {
+      Animated.spring(top, {
         toValue: screenHeight,
         useNativeDriver: false,
       }).start();
     }
   };
 
-  render() {
+  //@ts-ignore
+  const navigateToScreen = (screenName) => {
+    //@ts-ignore
+    navigation.navigate(screenName);
+    dispatch({ type: "CLOSE_MENU" });
+  };
 
-    return (
-      <AnimatedContainer style={{ top: this.state.top }}>
-        <Cover>
-          <Image source={require("../../assets/background2.jpg")} />
-          <Title>Zakaria Coulibaly</Title>
-          <Subtitle>Mathematics learner</Subtitle>
-        </Cover>
-        <TouchableOpacity
-          // @ts-ignore
-          onPress={this.props.closeMenu}
-          style={{
-            position:"absolute",
-            top: 120,
-            left: "50%",
-            marginLeft: -22,
-            zIndex: 1
-          }}
-        >
-          <CloseView>
-            <Ionicons name="close-circle-outline" size={44} color="#546bfb" />
-          </CloseView>
-        </TouchableOpacity>
-        <Content>
-          {items.map((item, index) => (
-            <MenuItem
-              key={index}
-              icon={item.icon}
-              title={item.title}
-              text={item.text}
-              onPress={() => console.log("pressed")}
-            />
-          ))}
-        </Content>
-      </AnimatedContainer>
-    );
-  }
-}
+  const handleLogout = () => {
+    const firebaseApp = getFirebaseApp(); // Ensure Firebase is initialized
+    const auth = getAuth(firebaseApp);
+    signOut(auth).then(() => {
+      console.log('Logged out successfully');
+      navigateToScreen('Login');
+      dispatch({ type: "USER_LOGGED_OUT" });
+    }).catch((error) => {
+      console.error('Logout failed', error);
+    });
+  };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Menu);
+  return (
+    <AnimatedContainer style={{ top }}>
+      <Cover>
+        <Image source={require("../../assets/background2.jpg")} />
+        <UserContext.Consumer>
+          {user => (
+            // @ts-ignore
+            <Title>{user ? user.username : 'Guest'}!</Title>
+          )}
+        </UserContext.Consumer>
+        <Subtitle>Mathematics learner</Subtitle>
+      </Cover>
+      <TouchableOpacity
+        onPress={() => dispatch({ type: "CLOSE_MENU" })}
+        style={{
+          position: "absolute",
+          top: 120,
+          left: "50%",
+          marginLeft: -22,
+          zIndex: 1,
+        }}
+      >
+        <CloseView>
+          <Ionicons name="close-circle-outline" size={44} color="#546bfb" />
+        </CloseView>
+      </TouchableOpacity>
+      <Content>
+        <MenuItem
+          icon="settings"
+          title="Profile"
+          text="settings"
+          onPress={() => navigateToScreen('Profile')}
+        />
+        <MenuItem
+          icon="card"
+          title="Billing"
+          text="payments"
+          onPress={() => navigateToScreen('BillingScreen')}
+        />
+        <MenuItem
+          icon="compass"
+          title="Learn Math"
+          text="start course"
+          onPress={() => navigateToScreen('MathCourseScreen')}
+        />
+        <MenuItem
+          icon="exit"
+          title="Log out"
+          text="see you soon!"
+          onPress={handleLogout}
+        />
+      </Content>
+    </AnimatedContainer>
+  );
+};
+
+export default Menu;
 
 const Image = styled.Image`
     position: absolute;

@@ -1,87 +1,97 @@
-
-import React from 'react';
-import { ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { getDatabase, ref, onValue } from "firebase/database";
+import { getAuth } from "firebase/auth";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
+import Styled from 'styled-components';
+import { Alert } from "react-native";
 
 const QuizzesScreen = () => {
+  const [quizzes, setQuizzes] = useState([])
+  const [unlockedQuizzes, setUnlockedQuizzes] = useState(['1']); // Assume only the first quiz is unlocked by default
   const navigation = useNavigation();
-  const quizzes = [
-    { id: '1', title: 'Functions', iconName: 'git-compare-outline' },
-    { id: '2', title: 'Trigo', iconName: 'move-sharp' },
-    { id: '3', title: 'Complex', iconName: 'extension-puzzle-outline' },
-    { id: '4', title: 'Rationals', iconName: 'easel-outline' },
-    { id: '5', title: 'Conics', iconName: 'construct-sharp' },
-    { id: '6', title: 'Vectors', iconName: 'analytics-outline' },
-    { id: '7', title: 'Matrix', iconName: 'apps-sharp' },
-  ];
+  const auth = getAuth();
+  const userId = auth.currentUser?.uid;
+
+  useEffect(() => {
+    const db = getDatabase();
+    const quizzesRef = ref(db, 'Quizzes');
+
+    onValue(quizzesRef, (snapshot) => {
+      const quizzesData = snapshot.val();
+      const quizzesList = quizzesData ? Object.keys(quizzesData).map(key => ({
+        ...quizzesData[key],
+        id: key
+      })) : [];
+      // @ts-ignore
+      setQuizzes(quizzesList);
+    });
+
+    // Fetch user progress
+    if (userId){
+      const userRef = ref(db, `users/${userId}`);
+      onValue(userRef, (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.unlockedQuizzes) {
+          setUnlockedQuizzes(userData.unlockedQuizzes);
+        }
+      });
+     }
+    }, [userId]);  // Dependency on userId ensures the effect runs again if the user changes
 
   // @ts-ignore
-  const renderButton = (quiz, index) => {
-    // Calculate offset for snake-like alignment
-    let additionalStyle = {};
-    if (index % 2 === 0) {
-      additionalStyle = {
-        // For even indices, place button a bit to the right (if not the first one)
-        marginRight: index === 0 ? 15 : 25,
-      };
-    } else {
-      additionalStyle = {
-        // For odd indices, place button a bit to the left
-        marginLeft: 90,
-      };
-    }
+  const renderButton = (quiz) => {
+    const isUnlocked = unlockedQuizzes.includes(quiz.id);
 
     return (
-      <TouchableOpacity
+      <QuizButton
         key={quiz.id}
-        style={[styles.button, additionalStyle]}
-        // @ts-ignore
-        onPress={() => navigation.navigate('Quiz', { quizId: quiz.id })}
+        onPress={() => {
+          if (isUnlocked) {
+            // @ts-ignore
+            navigation.navigate("QuizDetail", { quiz: quiz });
+          } else {
+            Alert.alert("Locked", "Complete previous quizzes to unlock this one.");
+          }
+        }}
+        style={{ backgroundColor: isUnlocked ? "#f0f0f0" : "#d3d3d3" }}
       >
         <Ionicons name={quiz.iconName} size={30} color="#000" />
-        <Text style={styles.buttonText}>{quiz.title}</Text>
-      </TouchableOpacity>
+        <ButtonText>{quiz.title}</ButtonText>
+      </QuizButton>
     );
   };
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <Container key={quizzes.keys()}>
       {quizzes.map(renderButton)}
-    </ScrollView>
+    </Container>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center', // This is removed to allow snake-like alignment
-    paddingHorizontal: 50, // This padding is to ensure there is space for the snake effect
-
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 15, // Space between buttons vertically
-  },
-  button: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  buttonText: {
-    fontSize: 18,
-  },
-
-});
+  };
 
 export default QuizzesScreen;
+
+// @ts-ignore
+const Container = Styled.ScrollView`
+  flex: 1;
+  padding: 20px;
+`;
+
+// @ts-ignore
+const QuizButton = Styled.TouchableOpacity`
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.23;
+  shadow-radius: 2.62px;
+  elevation: 4;
+`;
+
+// @ts-ignore
+const ButtonText = Styled.Text`
+  font-size: 18px;
+  margin-top: 10px;
+`;

@@ -33,6 +33,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Library permission is needed to change your avatar</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

@@ -16,6 +16,7 @@ class Success extends React.Component {
 
 
   componentDidMount() {
+    // @ts-ignore
     if (this.props.isActive) {
       Animated.timing(this.state.top, {
         toValue: 0, duration: 0,
