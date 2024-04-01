@@ -1,8 +1,19 @@
 import React from "react";
-import styled from "styled-components";
 import { Pressable } from "react-native";
+import MathText from "react-native-math-view/src/MathText";
 
+/**
+ * `WordOption` is a React functional component that displays a selectable word or phrase
+ * formatted using LaTeX, typically used within an interactive math quiz or similar context.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.text - The text to be displayed, formatted in LaTeX.
+ * @param {Function} props.onPress - The function to call when the component is pressed.
+ * @param {boolean} props.isSelected - Indicates whether the option is currently selected.
+ * @returns The JSX elements to render the WordOption.
+ */
 const  WordOption = ({text, onPress, isSelected}) =>{
+  const displayText = `$$${text}$$`;
   return (
     <Pressable onPress={onPress}
       style={{
@@ -12,33 +23,14 @@ const  WordOption = ({text, onPress, isSelected}) =>{
         borderRadius: 5,
         padding: 10,
         paddingHorizontal: 15,
-        margin: 10,
+        margin: 8,
         backgroundColor: isSelected ? "lightgrey" : "white",
       }}
     >
-      <Text style={{ color: isSelected ? "lightgray" : "black", }}>
-        {text}
-      </Text>
+      <MathText value={displayText} style={{ color: isSelected ? "lightgray" : "black" }} />
     </Pressable>
   );
 }
 
 
 export default WordOption;
-
-
-// @ts-ignore
-const Root = styled.View`
-    border-width: 2px;
-    border-bottom-width: 4px;
-    border-color: lightgrey;
-    border-radius: 5px;
-    padding: 10px;
-    padding-horizontal: 15px;
-    margin: 10px;
-`;
-
-// @ts-ignore
-const Text = styled.Text`
-
-`;

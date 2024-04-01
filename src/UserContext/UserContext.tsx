@@ -21,10 +21,9 @@ export const UserProvider = ({ children }) => {
           setUser({
             // @ts-ignore
             username: data.username, // Assuming you've stored it under 'username' key
-            email: firebaseUser.email,
+            profileImageUrl: data.profileImageUrl
+
           });
-        }, {
-          onlyOnce: true // Fetch data only once, not continuously
         });
       } else {
         setUser(null);

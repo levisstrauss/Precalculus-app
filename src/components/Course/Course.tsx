@@ -12,21 +12,6 @@ interface CourseProps {
   name: string;
   title: string;
 }
-// const Course = ({caption, title, name, avatar, subtitle, image, logo}: CourseProps) => (
-//   <Container style={{ width: cardWidth }}>
-//     <Cover>
-//       <Image source={image} />
-//       <Logo source={logo} resizeMode="contain" />
-//       <Subtitle>{subtitle}</Subtitle>
-//       <Title>{title}</Title>
-//     </Cover>
-//     <Content>
-//       <Avatar source={avatar} />
-//       <Caption>{caption}</Caption>
-//       <Author>Taught by: {name}</Author>
-//     </Content>
-//   </Container>
-// );
 const screenWidth = Dimensions.get("window").width;
 
 // @ts-ignore
@@ -40,6 +25,20 @@ function getCourseWidth(screenWidth ) {
   }
   return cardWidth;
 }
+
+/**
+ * `Course` is a React class component that displays a course card, including an image, logo, title,
+ * subtitle, and other information. The component dynamically adjusts its width based on the screen size.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.title - The title of the course.
+ * @param {string} props.subtitle - The subtitle of the course.
+ * @param {ImageSourcePropType} props.image - The source of the course image.
+ * @param {ImageSourcePropType} props.logo - The source of the course logo.
+ * @param {ImageSourcePropType} props.avatar - The source of the instructor's avatar image.
+ * @param {string} props.caption - A short description or caption for the course.
+ * @param {string} props.name - The name of the instructor or author of the course.
+ */
 class Course extends React.Component<CourseProps> {
   state = {
     cardWidth: getCourseWidth(screenWidth)

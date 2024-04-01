@@ -1,9 +1,9 @@
 import {  createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import CoursesScreen from "../../screens/CoursesScreen";
 import LeaderboardScreen from "../../screens/LeaderboardScreen";
 import QuizzesScreen from "../../screens/QuizzesScreen";
 import HomeScreen from "../../screens/HomeScreen";
+import BadgeScreen from "../../screens/CoursesScreen";
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -24,9 +24,10 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Courses"
-        component={CoursesScreen}
+        name="Badges"
+        component={BadgeScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({color, size}) =>(
             <MaterialIcons
               name="school"

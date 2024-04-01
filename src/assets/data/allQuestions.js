@@ -2,9 +2,9 @@ export default [
   {
     id: "q0",
     type: "FILL_IN_THE_BLANK",
-    text: "Una mina, una",
-    options: ["yo", "la", "mujer", "el"],
-    correct: "mujer",
+    text: "g(x) = x^2 + 2x + 1",
+    options: ["x^2 + 2x + 1", "x^2 + 2x + 1", "x^2 + 2x + 1", "x^2 + 2x + 1"],
+    correct: "x^2 + 2x + 1",
   },
   {
     id: "q1",

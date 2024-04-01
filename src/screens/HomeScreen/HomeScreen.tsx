@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, SafeAreaView, ScrollView, TouchableOpacity, StatusBar, Text, Modal, ImageSourcePropType } from "react-native";
+import { Animated, Easing, SafeAreaView, ScrollView, TouchableOpacity, StatusBar, ImageSourcePropType } from "react-native";
 import styled from "styled-components";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Menu from "../../components/Menu";
@@ -61,13 +61,20 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+/**
+ * `HomeScreen` is a class component in React that serves as the main entry point of the application.
+ * It displays a collection of cards, courses, and a user interface for navigating to different parts of the app.
+ * The component integrates with GraphQL to fetch data and uses Redux for state management.
+ *
+ * @extends React.Component
+ */
+
 class HomeScreen extends React.Component {
   state = {
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1)
   };
-
-
+  static contextType = UserContext;
   componentDidMount() {
     StatusBar.setBarStyle("dark-content", true);
   }
@@ -141,7 +148,7 @@ class HomeScreen extends React.Component {
                   <Title>Welcome back</Title>
                   <UserContext.Consumer>
                     {user => (
-                      //@ts-ignore
+                      // @ts-ignore
                       <Name>{user ? user.username : 'Guest'}</Name>
                     )}
                   </UserContext.Consumer>
@@ -309,170 +316,58 @@ const TitleBar = styled.View`
 const Content = styled.View`
   padding-left: 10px;
 `;
-
-
-// // @ts-ignore
-// const RootView = styled.View`
-//     background: black;
-//     flex: 1;
-// `;
-//
-// // @ts-ignore
-// const Message = styled.Text`
-//   margin: 20px;
-//   color: #b8bece;
-//   font-size: 15px;
-//   font-weight: 500;
-// `;
-//
-// // @ts-ignore
-// const SubTitle = styled.Text`
-//     color: #b8bece;
-//     font-weight: 600;
-//     font-size: 15px;
-//     margin-left: 20px;
-//     margin-top: 20px;
-//     text-transform: uppercase;
-// `;
-//
-// // @ts-ignore
-// const Container = styled.View`
-//     flex: 1;
-//     background-color: #f0f3f5;
-//     border-top-left-radius: 10px;
-//     border-top-right-radius: 10px;
-// `;
-//
-// const AnimatedContainer = Animated.createAnimatedComponent(Container);
-//
-// // @ts-ignore
-// const Title = styled.Text`
-//     font-size: 16px;
-//     color: #b8bece;
-//     font-weight: 500;
-// `;
-// // @ts-ignore
-// const CardsContainer = styled.View`
-//   flex-direction: row;
-//   padding-left: 10px;
-// `;
-// // @ts-ignore
-// const Name = styled.Text`
-//     font-size: 20px;
-//     color: #3c4560;
-//     font-weight: bold;
-// `;
-//
-// // @ts-ignore
-// const TitleBar = styled.View`
-//     width: 100%;
-//     margin-top: 50px;
-//     padding-left: 80px;
-// `;
-
 const Logos = [
   {
-    image: require("../../assets/logo-framerx.png"),
+    image: require("../../assets/logo/inverse.svg"),
     text: "Composite Func."
   },
   {
-    image: require("../../assets/logo-figma.png"),
+    image: require("../../assets/logo/complex.svg"),
     text: "Complex N."
   }
   ,
   {
-    image: require("../../assets/logo-studio.png"),
+    image: require("../../assets/logo/Trigo.svg"),
     text: "Trigonometry"
   }
   ,
   {
-    image: require("../../assets/logo-react.png"),
+    image: require("../../assets/logo/rational.svg"),
     text: "Rational functions"
   },
   {
-    image: require("../../assets/logo-swift.png"),
+    image: require("../../assets/logo/Conics.svg"),
     text: "Conics"
   }
   ,
   {
-    image: require("../../assets/logo-sketch.png"),
+    image: require("../../assets/logo/Vectors.svg"),
     text: "Vectors"
   },
   {
-    image: require("../../assets/logo-sketch.png"),
+    image: require("../../assets/logo/matrix.svg"),
     text: "Matrix"
   }
 
 ]
 
-
-const cards = [
-  {
-    title: "React Native for Designers",
-    image: require("../../assets/background11.jpg"),
-    subtitle: "React Native",
-    caption: "1 of 12 sections",
-    logo: require("../../assets/logo-react.png")
-  },
-  {
-    title: "Styled Components",
-    image: require("../../assets/background12.jpg"),
-    subtitle: "React Native",
-    caption: "2 of 12 sections",
-    logo: require("../../assets/logo-react.png")
-  },
-  {
-    title: "Props and Icons",
-    image: require("../../assets/background13.jpg"),
-    subtitle: "React Native",
-    caption: "3 of 12 sections",
-    logo: require("../../assets/logo-react.png")
-  },
-  {
-    title: "Static Data and Loop",
-    image: require("../../assets/background14.jpg"),
-    subtitle: "React Native",
-    caption: "4 of 12 sections",
-    logo: require("../../assets/logo-react.png")
-  }
-]
-
-
 const courses = [
   {
-    title: "Prototype in InVision Studio",
+    title: "Probability and combinatorics",
     subtitle: "10 sections",
     image: require("../../assets/background13.jpg"),
     logo: require("../../assets/logo-studio.png"),
     author: "Zakaria",
     avatar: require("../../assets/avatar.jpg"),
-    caption: "Design and interactive prototype"
+    caption: "Learn probability and Combinatorics concepts"
   },
   {
-    title: "React for Designers",
+    title: "Master Series",
     subtitle: "12 sections",
     image: require("../../assets/background11.jpg"),
-    logo: require("../../assets/logo-react.png"),
+    logo: require("../../assets/logo-studio.png"),
     author: "Zakaria",
     avatar: require("../../assets/avatar.jpg"),
-    caption: "Learn to design and code a React site"
+    caption: "Learn fundamental series skills"
   },
-  {
-    title: "Design and Code with Framer X",
-    subtitle: "10 sections",
-    image: require("../../assets/background14.jpg"),
-    logo: require("../../assets/logo-framerx.png"),
-    author: "Zakaria",
-    avatar: require("../../assets/avatar.jpg"),
-    caption: "Create powerful design and code components for your app"
-  },
-  {
-    title: "Design System in Figma",
-    subtitle: "10 sections",
-    image: require("../../assets/background6.jpg"),
-    logo: require("../../assets/logo-figma.png"),
-    author: "Zakaria",
-    avatar: require("../../assets/avatar.jpg"),
-    caption: "Complete guide to designing a site using a collaborative design tool"
-  }
 ]

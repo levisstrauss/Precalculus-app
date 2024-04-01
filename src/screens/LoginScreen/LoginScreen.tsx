@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar} from 'react-native';
+import { StatusBar, Alert} from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,7 +10,8 @@ import Success from '../../components/Success';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirebaseApp } from '../../utils/firebaseHelper';
 import Styled from "styled-components";
-import { getDatabase, ref, set, get } from "firebase/database";
+import { getDatabase, ref, get } from "firebase/database";
+
 
 // Validation schema
 const schema = yup.object().shape({
@@ -18,6 +19,16 @@ const schema = yup.object().shape({
   password: yup.string().min(6, 'Password must be at least 6 characters long').required('Password is required'),
 });
 
+
+/**
+ * `LoginScreen` is a React functional component that provides a user interface
+ * for logging into the application. It validates user input against a schema using `yup`
+ * and handles the authentication process with Firebase.
+ *
+ * @param {Object} props - The props passed to the component.
+ * @param {Object} props.navigation - The navigation prop used for navigating between screens.
+ * @returns The JSX elements to render the Login screen.
+ */
 // @ts-ignore
 const LoginScreen = ({ navigation }) => {
   const [firebaseError, setFirebaseError] = React.useState('');
@@ -33,8 +44,15 @@ const LoginScreen = ({ navigation }) => {
     try {
       const auth = getAuth(getFirebaseApp());
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const userId = userCredential.user.uid;
+      const user = userCredential.user;
+      // Check if the user's email is verified
+      if (!user.emailVerified) {
+        Alert.alert("Please verify your email before logging in. Check your inbox for the verification email.");
+        setIsLoading(false); // Stop the loading indicator
+        return; // Exit the function early
+      }
 
+      const userId = user.uid;
       // Get a reference to the user's data in the Realtime Database
       const db = getDatabase(getFirebaseApp());
       const userRef = ref(db, `users/${userId}`);
@@ -44,20 +62,17 @@ const LoginScreen = ({ navigation }) => {
 
       if (snapshot.exists()) {
         const userData = snapshot.val();
-        const username = userData.username;
-
-
+        //const username = userData.username;
         setIsSuccess(true);
-        setTimeout(() => {
+        setTimeout( async () => {
           setIsSuccess(false);
-          navigation.navigate('Feed', { username: username });
+          navigation.navigate('Feed', { username: userData.username });
           reset(); // Reset form fields
-          setFirebaseError(''); // Reset Firebase error message at the start of a new login attempt
+          setFirebaseError(''); // Clear any previous error messages
         }, 1000);
       }else {
         console.error("User data not found for the user ID:", userId);
       }
-      //navigation.navigate('Feed');
     } catch (error) {
       //console.error('Login failed:', error);
       // @ts-ignore
@@ -210,11 +225,13 @@ const SignupButton = Styled.TouchableOpacity`
   color: #546bfb;
   font-weight: bold;
 `;
+
 // @ts-ignore
 const SignUpText = Styled.Text`
   font-size: 16px;
   color: grey;
 `;
+
 // @ts-ignore
 const BackgroundImage = Styled.Image`
   width: 100%;
@@ -229,17 +246,20 @@ const LightImages = Styled.View`
   width: 100%;
   position: absolute;
 `;
+
 // @ts-ignore
 const ContentWrapper = Styled.View`
   justify-content: center;
   margin: 15px;
   margin-top: 110%;
 `;
+
 // @ts-ignore
 const FormContainer = Styled.View`
   margin-bottom: 20px;
   justify-content: space-between;
 `;
+
 // @ts-ignore
 const StyledInput = Styled.TextInput`
   height: 40px;
@@ -249,6 +269,7 @@ const StyledInput = Styled.TextInput`
   border-radius: 5px;
   padding: 10px;
 `;
+
 // @ts-ignore
 const SubmitButton = Styled.TouchableOpacity`
   background-color: #546bfb;
@@ -256,18 +277,21 @@ const SubmitButton = Styled.TouchableOpacity`
   align-items: center;
   border-radius: 5px;
 `;
+
 // @ts-ignore
 const ButtonText = Styled.Text`
   color: white;
   font-size: 18px;
   text-align: center;
 `;
+
 // @ts-ignore
 const ErrorMessage = Styled.Text`
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 `;
+
 // @ts-ignore
 const Content = Styled.View`
   align-items: center;

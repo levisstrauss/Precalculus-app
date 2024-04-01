@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SectionScreen from "../../screens/SectionScreen";
@@ -10,16 +10,22 @@ import LoginScreen from "../../screens/LoginScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
 import EditProfileScreen from "../../screens/EditProfileScreen";
 import QuizzesScreen from "../../screens/QuizzesScreen";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createNativeStackNavigator();
 
+/**
+ * `Navigation` is a React functional component that sets up the navigation stack for the application.
+ * It uses `react-navigation` to create a stack navigator and defines the screens and navigation options.
+ *
+ * @returns The JSX elements to render the navigation container and stack navigator.
+ */
 const Navigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="GettingStarted"
           screenOptions={{headerShown: true}}
+          initialRouteName="GettingStarted"
         >
         <Stack.Screen
           name="GettingStarted"
@@ -61,13 +67,11 @@ const Navigation = () => {
           component={ProfileScreen}
           options={{headerShown: true}}
         />
-
         <Stack.Screen
           name="EditProfile"
           component={EditProfileScreen}
           options={{headerShown: true}}
         />
-
     </Stack.Navigator>
     </NavigationContainer>
   )

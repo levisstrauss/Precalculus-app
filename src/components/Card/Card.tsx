@@ -10,7 +10,19 @@ interface CardProps {
   subtitle: string;
 }
 
-
+/**
+ * `Card` is a React functional component that displays a card layout including a cover image,
+ * title, logo, caption, and subtitle. It's used to represent a piece of content, like an article,
+ * a course, or a profile, in a visually appealing manner.
+ *
+ * @param {Object} props - The props for the Card component.
+ * @param {string} props.title - The title of the card.
+ * @param {string} props.caption - A short descriptive text for the card.
+ * @param {string} props.logo - The URL of the logo image.
+ * @param {ImageSourcePropType} props.image - The source of the cover image.
+ * @param {string} props.subtitle - A subtitle for the card, displayed in uppercase.
+ * @returns The JSX elements to render the Card component.
+ */
 const Card = ({title, caption, logo, image, subtitle}: CardProps) => {
   return (
     <Container style={{ elevation: 10}}>

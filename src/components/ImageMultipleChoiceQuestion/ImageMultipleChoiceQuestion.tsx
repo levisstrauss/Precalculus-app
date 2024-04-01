@@ -3,11 +3,22 @@ import ImageOption from "../ImageOption";
 import Button from "../Button";
 import PropTypes from "prop-types";
 import styled from "styled-components/native";
+import MathText from "react-native-math-view/src/MathText";
 
+
+/**
+ * `ImageMultipleChoiceQuestion` is a React functional component that renders an image-based multiple-choice question.
+ * Users select one of the provided image options and submit their answer to check if it's correct or wrong.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.question - The question object containing the question text and options.
+ * @param {Function} props.onCorrect - Callback function that is called when the correct option is selected.
+ * @param {Function} props.onWrong - Callback function that is called when an incorrect option is selected.
+ * @returns The JSX elements to render the image-based multiple-choice question.
+ */
 // @ts-ignore
 const ImageMultipleChoiceQuestion = ({question, onCorrect, onWrong}) => {
   const [selected, setSelected] = useState(null);
-
   const onButtonPress = () => {
     // @ts-ignore
     if (selected.correct) {
@@ -19,9 +30,10 @@ const ImageMultipleChoiceQuestion = ({question, onCorrect, onWrong}) => {
     }
   };
 
+  const questionText = `$$${question.question}$$`;
   return (
     <>
-      <Title>{question.question}</Title>
+      <MathText value={questionText}/>
       <OptionsContainer>
         {question.options.map((option) => (
           <ImageOption
@@ -64,13 +76,6 @@ const OptionsContainer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-`;
-
-// @ts-ignore
-const Title = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  align-self: stretch;
 `;
 
 

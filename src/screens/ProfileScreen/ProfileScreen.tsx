@@ -3,6 +3,17 @@ import Styled from 'styled-components';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, onValue, query, orderByChild, limitToLast } from 'firebase/database';
 
+
+/**
+ * `ProfileScreen` is a React functional component that displays the user's profile information,
+ * including their username, location, bio, profile picture, and statistics like quizzes completed,
+ * points, leaderboard rank, and badges unlocked. It fetches user data from Firebase's Realtime Database
+ * and calculates the user's rank based on their points.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.navigation - The navigation prop used for navigating between screens.
+ * @returns The JSX elements to render the Profile screen.
+ */
 //@ts-ignore
 const ProfileScreen = ({navigation}) => {
 
@@ -16,51 +27,6 @@ const ProfileScreen = ({navigation}) => {
     points: 0,
     quizCompleted: 0,});
 
-  // useEffect(() => {
-  //   const auth = getAuth();
-  //   const db = getDatabase();
-  //   //@ts-ignore
-  //   const userRef = ref(db, 'users/' + auth.currentUser.uid);
-  //
-  //
-  //
-  //   onValue(userRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     setUserData({
-  //       username: data.username || 'Anonymous',
-  //       city: data.city || 'Unknown City',
-  //       state: data.state || 'Unknown State',
-  //       bio: data.bio || 'No bio available.',
-  //       profileImageUrl: data.profileImageUrl || 'https://via.placeholder.com/50',
-  //       points: data.points || 0,
-  //       quizCompleted: data.quizCompleted || 0,
-  //     });
-  //   });
-  //
-  //   // Query the top 10 users
-  //   const leaderboardRef = query(ref(db, 'users'), orderByChild('points'), limitToLast(10));
-  //   onValue(leaderboardRef, (snapshot) => {
-  //     let rank = 1;
-  //     let found = false;
-  //     snapshot.forEach((childSnapshot) => {
-  //       // @ts-ignore
-  //       if (childSnapshot.key === auth.currentUser.uid) {
-  //         found = true;
-  //         // @ts-ignore
-  //         setUserRank(rank);
-  //       }
-  //       rank++;
-  //     });
-  //     if (!found) {
-  //       setUserRank('invisible');
-  //     }
-  //   });
-  //   // Cleanup subscription on unmount
-  //   return () => {
-  //     // Add any cleanup code here if needed
-  //   };
-  // }, []);
-
   useEffect(() => {
     const auth = getAuth();
     const db = getDatabase();
@@ -73,6 +39,7 @@ const ProfileScreen = ({navigation}) => {
     const userRef = ref(db, 'users/' + userId);
     const unsubscribeUser = onValue(userRef, (snapshot) => {
       const data = snapshot.val() || {};
+
       setUserData({
         username: data.username || 'Anonymous',
         city: data.city || 'Unknown City',
@@ -81,6 +48,8 @@ const ProfileScreen = ({navigation}) => {
         profileImageUrl: data.profileImageUrl || 'https://cl.ly/55da82beb939/download/avatar-default.jpg',
         points: data.points || 0,
         quizCompleted: data.quizCompleted || 0,
+        // @ts-ignore
+        unlockedBadges: data.unlockedBadges ? data.unlockedBadges.length : 0,
       });
     });
 
@@ -109,10 +78,9 @@ const ProfileScreen = ({navigation}) => {
       unsubscribeLeaderboard();
     };
   }, []);
-
   return (
     <Container>
-      <ProfileImage source={{ uri: userData.profileImageUrl }} />
+      <ProfileImage source={{ uri: userData.profileImageUrl || 'https://cl.ly/55da82beb939/download/avatar-default.jpg' }} />
       <UserInfo>
         <UserName>{userData.username}</UserName>
         <UserLocation>
@@ -134,8 +102,8 @@ const ProfileScreen = ({navigation}) => {
           <StatValue>{userRank === 'Not in top 10' ? userRank : `#${userRank}`}</StatValue>
         </InfoBox>
         <InfoBox>
-          <StatName>Quiz unlock</StatName>
-          <StatValue>Advanced</StatValue>
+          <StatName>Badges Unlocked</StatName>
+          <StatValue>{userData.unlockedBadges}</StatValue>
         </InfoBox>
       </StatsContainer>
       <BioContainer>

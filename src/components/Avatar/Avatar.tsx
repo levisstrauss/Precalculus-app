@@ -3,8 +3,14 @@ import Styled from "styled-components/native";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 
+/**
+ * `Avatar` is a React functional component that renders the user's profile image.
+ * The profile image is fetched from the database and displayed as a circular image.
+ *
+ * @returns The JSX elements to render the user's profile image.
+ */
 const Avatar = () => {
-  const [photo, setPhoto] = useState("https://cl.ly/55da82beb939/download/avatar-default.jpg"); // Default avatar image
+  const [photo, setPhoto] = useState(); // Default avatar image
 
   useEffect(() => {
     const auth = getAuth();
@@ -26,7 +32,7 @@ const Avatar = () => {
     }
   }, []);
 
-  return <Image source={{ uri: photo }} />;
+  return <Image source={{ uri: photo}} />;
 };
 
 export default Avatar;

@@ -11,15 +11,9 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {connect } from "react-redux";
-//import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-
-//const tabBarHeight = useBottomTabBarHeight();
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const tabBarHeight = 25;  // Fixed height of the tab bar later on
-
-
-
 function mapStateToProps(state: any) {
   return { action: state.action };
 }
@@ -47,6 +41,7 @@ class Project extends React.Component {
   }
 
   openCard = () => {
+    // @ts-ignore
     if (!this.props.canOpen) return;
     Animated.spring(this.state.cardWidth, { toValue: screenWidth , useNativeDriver: false }).start();
     Animated.spring(this.state.cardHeight, { toValue: screenHeight- tabBarHeight, useNativeDriver: false }).start();
@@ -55,6 +50,7 @@ class Project extends React.Component {
     Animated.spring(this.state.textHeight, { toValue: 1000, useNativeDriver: false }).start();
 
     StatusBar.setHidden(true);
+    // @ts-ignore
     this.props.openCard();
   }
 
@@ -66,6 +62,7 @@ class Project extends React.Component {
     Animated.spring(this.state.textHeight, { toValue:  100, useNativeDriver: false }).start();
 
     StatusBar.setHidden(false);
+    // @ts-ignore
     this.props.closeCard();
   }
   render(){
@@ -144,16 +141,13 @@ const Cover = Styled.View`
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
   overflow: hidden;
- 
 `;
 
 // @ts-ignore
 const Image = Styled.Image`
   width: 100%;
   height: 290px;
- 
 `;
-
 // @ts-ignore
 const Title = Styled.Text`
    position: absolute;

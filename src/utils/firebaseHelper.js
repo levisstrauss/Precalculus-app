@@ -22,7 +22,6 @@ export const getFirebaseApp = () => {
     initializeAuth(app, {
       persistence: getReactNativePersistence(ReactNativeAsyncStorage)
     });
-
     return app;
   } else {
     // Return the existing Firebase app instance if already initialized

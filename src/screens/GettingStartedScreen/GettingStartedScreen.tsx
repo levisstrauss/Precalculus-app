@@ -2,6 +2,19 @@ import React from "react";
 import Styled from "styled-components";
 import {TouchableOpacity} from "react-native";
 import Animated, {FadeInUp} from "react-native-reanimated";
+
+/**
+ * `GettingStartedScreen` is a React component that serves as the introductory screen
+ * for a Pre-Calculus learning application. It displays a welcome message, a motivational quote,
+ * and a "Get Started" button that navigates to the login screen.
+ *
+ * The component uses animations from `react-native-reanimated` to create a dynamic entrance for the
+ * elements on the screen, making the introduction more engaging.
+ *
+ * @param {Object} props - The properties passed to the GettingStartedScreen component.
+ * @param {Object} props.navigation - The navigation prop used for navigating to other screens.
+ * @returns The JSX for the GettingStartedScreen component.
+ */
 // @ts-ignore
 const GettingStartedScreen = ({ navigation }) => {
   const handlePress = () => {

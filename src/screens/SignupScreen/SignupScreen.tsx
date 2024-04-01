@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { getDatabase, ref, set } from 'firebase/database';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { getFirebaseApp } from '../../utils/firebaseHelper';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Styled from 'styled-components';
-
 import Loading from '../../components/Loading';
 import Success from '../../components/Success';
-
-
 // Validation schema
 const schema = yup.object({
   username: yup.string().required('Username is required').min(6, 'Username must be at least 6 characters long'),
@@ -21,9 +18,17 @@ const schema = yup.object({
   confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
+/**
+ * `SignupScreen` is a React functional component that provides a user interface for registering a new user.
+ * It uses Firebase Authentication for user creation and also writes additional user data to Firebase Realtime Database.
+ * The form handling and validation are managed by `react-hook-form` and `yup`.
+ *
+ * @param {Object} props - The props passed to the component.
+ * @param {Object} props.navigation - The navigation prop used for navigating between screens.
+ * @returns The JSX elements to render the Signup screen.
+ */
 //@ts-ignore
 const SignupScreen = ({ navigation }) => {
-
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [firebaseError, setFirebaseError] = React.useState('');
@@ -35,8 +40,18 @@ const SignupScreen = ({ navigation }) => {
   const handleSignup = async (data) => {
     setIsLoading(true);
     try {
-      const auth = getAuth(getFirebaseApp());
+      const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      // Send verification email
+      sendEmailVerification(userCredential.user)
+        .then(() => {
+          console.log("Verification email sent.");
+        })
+        .catch((error) => {
+          console.error("Error sending verification email: ", error);
+        });
+
+
       const db = getDatabase(getFirebaseApp());
       await set(ref(db, 'users/' + userCredential.user.uid), {
         username: data.username,
@@ -45,14 +60,17 @@ const SignupScreen = ({ navigation }) => {
         quizCompleted: 0,
         city: "City",
         state: "State",
+        unlockedBadges: [],
+        createdAt: new Date().toISOString(),
         bio: "Something about yourself...",
+        profileImageUrl: 'https://cl.ly/55da82beb939/download/avatar-default.jpg',
       });
       setIsSuccess(true);
       setTimeout(() => {
         setIsSuccess(false);
         navigation.navigate('Login');
         reset(); // Reset form fields
-        setFirebaseError(''); // Reset Firebase error message at the start of a new signup attempt
+        setFirebaseError(''); // Reset a Firebase error message at the start of a new signup attempt
       }, 2000);
 
    } catch (error) {
@@ -74,11 +92,10 @@ const SignupScreen = ({ navigation }) => {
     'auth/too-many-requests': 'We have blocked all requests from this device due to unusual activity. Try again later.',
     'auth/username-already-in-use': 'The username is already in use by another account.',
   };
-
   //@ts-ignore
   const mapFirebaseErrorToMessage = (errorCode) => {
     //@ts-ignore
-    return firebaseErrorMessages[errorCode] || 'An unexpected error occurred. Please try again.';
+    return firebaseErrorMessages[errorCode];
   };
 
   return (
@@ -137,8 +154,9 @@ const SignupScreen = ({ navigation }) => {
               />
             )}
           />
-          {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
-
+          {errors.username &&
+            <ErrorMessage>{errors.username.message}</ErrorMessage>
+          }
           <Controller
             name="email"
             control={control}

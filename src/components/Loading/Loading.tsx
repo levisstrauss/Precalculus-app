@@ -6,6 +6,11 @@ import Styled from "styled-components";
 const screenHeight = Dimensions.get("window").height;
 
 
+/**
+ * `Loading` is a React class component that displays an animated loading indicator.
+ * The `isActive` prop controls the component's visibility and animation.
+ * It animates into view when active and out of view when inactive.
+ */
 class Loading extends React.Component {
   animation = React.createRef();
   state = {
@@ -37,12 +42,10 @@ class Loading extends React.Component {
         toValue: 0,
         useNativeDriver: false
       }).start();
-
       // @ts-ignore
       this.animation.loop = false;
     }
   }
-
 
   render(){
     // @ts-ignore
@@ -66,8 +69,6 @@ class Loading extends React.Component {
 }
 
 export default Loading;
-
-
 // @ts-ignore
 const Container = Styled.View`
   width: 100%;
@@ -79,87 +80,4 @@ const Container = Styled.View`
   top: 0;
   left: 0;
 `;
-
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
-
-
-
-// import React, { useState, useEffect, useRef } from "react";
-// import Styled from "styled-components";
-// import LottieView from "lottie-react-native";
-// import { Animated, Dimensions } from "react-native";
-//
-// const screenHeight = Dimensions.get("window").height;
-//
-//
-// interface LoadingProps {
-//   isActive: boolean;
-// }
-// const Loading = ({ isActive }: LoadingProps) => {
-//   const [top] = useState(new Animated.Value(0));
-//   const [opacity] = useState(new Animated.Value(0));
-//   const animation = useRef(null);
-//
-//   useEffect(() => {
-//     if (isActive) {
-//       Animated.timing(top, {
-//         toValue: 0,
-//         duration: 0,
-//         useNativeDriver: false
-//       }).start();
-//       Animated.timing(opacity, {
-//         toValue: 1,
-//         useNativeDriver: false
-//       }).start();
-//
-//       if (animation.current) {
-//         // @ts-ignore
-//         animation.current.play();
-//       }
-//     } else {
-//       Animated.timing(top, {
-//         toValue: screenHeight,
-//         duration: 0,
-//         useNativeDriver: false
-//       }).start();
-//       Animated.timing(opacity, {
-//         toValue: 0,
-//         useNativeDriver: false
-//       }).start();
-//
-//       if (animation.current) {
-//         // @ts-ignore
-//         animation.current.loop = false;
-//       }
-//     }
-//   }, [isActive, top, opacity]);
-//
-//   return (
-//     <AnimatedContainer style={{ top, opacity }}>
-//       <LottieView
-//         source={require("../../assets/lottie-loading-fluid.json")}
-//         style={{ width: 200, height: 200 }}
-//         autoPlay={false}
-//         loop={true}
-//         ref={animation}
-//       />
-//     </AnimatedContainer>
-//   );
-// };
-//
-// export default Loading;
-
-// Styled components remain the same
-// @ts-ignore
-// const Container = Styled.View`
-//   width: 100%;
-//   height: 100%;
-//   background: rgba(255, 255, 255, 0.9);
-//   justify-content: center;
-//   align-items: center;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-// `;
-
-//const AnimatedContainer = Animated.createAnimatedComponent(Container);

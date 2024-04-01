@@ -1,1 +1,1 @@
-export {default} from './CoursesScreen';
+export {default} from './BadgeScreen.tsx';

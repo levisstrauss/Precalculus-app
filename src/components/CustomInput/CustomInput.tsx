@@ -1,4 +1,3 @@
-import { TextInput } from "react-native";
 import Styled from "styled-components";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
@@ -10,6 +9,19 @@ interface CustomInputProps {
   multiline?: boolean;
   rules?: object;
 }
+
+/**
+ * `CustomInput` is a React functional component that renders an input field controlled by react-hook-form.
+ * It supports text input, including multi-line text areas, and displays validation errors.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {Control} props.control - The react-hook-form control object for managing form state.
+ * @param {string} props.name - The name of the input field, which links it to the react-hook-form context.
+ * @param {string} props.label - The text label displayed beside the input field.
+ * @param {boolean} [props.multiline=false] - Determines if the input field should allow multi-line text input.
+ * @param {object} [props.rules={}] - Validation rules for the input field defined by react-hook-form.
+ * @returns The JSX elements to render the custom input field.
+ */
 const CustomInput = ({control, name, label, multiline = false, rules={}}: CustomInputProps) => {
   return (
     <>

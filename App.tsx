@@ -5,8 +5,10 @@ import Navigation from "./src/components/Navigation";
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import{getFirebaseApp} from "./src/utils/firebaseHelper";
 import { UserProvider } from "./src/UserContext/UserContext.tsx";
-import uploadQuizzes from "./src/data";
-// Initialize Firebase
+import AuthStateListener from "./src/AuthStateListener";
+// import uploadQuizzes  from './src/data.js';
+
+
 getFirebaseApp();
 
 
@@ -19,7 +21,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-
+// uploadQuizzes().then(r => console.log(r));
 
 //------ Initial State ----------------
 const initialState = {
@@ -45,6 +47,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+
 //------ Create Store ----------------
 // @ts-ignore
 const store = createStore(reducer);
@@ -55,7 +58,9 @@ const App = () => {
     <UserProvider>
       <ApolloProvider client={client}>
         <Provider store={store}>
-          <Navigation />
+          <AuthStateListener>
+            <Navigation />
+          </AuthStateListener>
         </Provider>
       </ApolloProvider>
     </UserProvider>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Animated, Dimensions, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MenuItem from "./MenuItem";
-import { connect } from "react-redux";
 import styled from "styled-components/native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
@@ -14,13 +13,13 @@ import { getAuth, signOut } from "firebase/auth";
 import { getFirebaseApp } from "../../utils/firebaseHelper";
 import { UserContext } from "../../UserContext/UserContext";
 
-interface MenuProps {
-  icon: string;
-  title: string;
-  text: string;
-  onPress: () => void;
-}
 
+/**
+ * `Menu` is a React functional component that provides a slide-in menu with user options.
+ * It uses animations to slide in and out of view and displays user-related information and menu items.
+ *
+ * @returns The JSX elements to render the Menu component.
+ */
 // @ts-ignore
 const Menu = () => {
   const navigation = useNavigation();
@@ -45,26 +44,22 @@ const Menu = () => {
       }).start();
     }
   };
-
   //@ts-ignore
   const navigateToScreen = (screenName) => {
     //@ts-ignore
     navigation.navigate(screenName);
     dispatch({ type: "CLOSE_MENU" });
   };
-
   const handleLogout = () => {
     const firebaseApp = getFirebaseApp(); // Ensure Firebase is initialized
     const auth = getAuth(firebaseApp);
-    signOut(auth).then(() => {
+    signOut(auth).then( async () => {
       console.log('Logged out successfully');
       navigateToScreen('Login');
-      dispatch({ type: "USER_LOGGED_OUT" });
     }).catch((error) => {
       console.error('Logout failed', error);
     });
   };
-
   return (
     <AnimatedContainer style={{ top }}>
       <Cover>
@@ -72,7 +67,7 @@ const Menu = () => {
         <UserContext.Consumer>
           {user => (
             // @ts-ignore
-            <Title>{user ? user.username : 'Guest'}!</Title>
+            <Title>{user ? user.username : 'Guest'}</Title>
           )}
         </UserContext.Consumer>
         <Subtitle>Mathematics learner</Subtitle>
@@ -96,24 +91,28 @@ const Menu = () => {
           icon="settings"
           title="Profile"
           text="settings"
+          // @ts-ignore
           onPress={() => navigateToScreen('Profile')}
         />
         <MenuItem
           icon="card"
           title="Billing"
           text="payments"
+          // @ts-ignore
           onPress={() => navigateToScreen('BillingScreen')}
         />
         <MenuItem
           icon="compass"
           title="Learn Math"
           text="start course"
+          // @ts-ignore
           onPress={() => navigateToScreen('MathCourseScreen')}
         />
         <MenuItem
           icon="exit"
           title="Log out"
           text="see you soon!"
+          // @ts-ignore
           onPress={handleLogout}
         />
       </Content>
@@ -151,7 +150,6 @@ const CloseView = styled.View`
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 `;
 
-
 // width: ${cardWidth};
 const Container = styled.View`
     position: absolute;
@@ -178,26 +176,3 @@ const Content = styled.View`
     background: #f0f3f5;
     padding: 50px;
 `;
-
-const items = [
-  {
-    icon: "settings",
-    title: "Profile",
-    text: "settings"
-  },
-  {
-    icon: "card",
-    title: "Billing",
-    text: "payments"
-  },
-  {
-    icon: "compass",
-    title: "Learn Math",
-    text: "start course"
-  },
-  {
-    icon: "exit",
-    title: "Log out",
-    text: "see you soon!"
-  }
-];

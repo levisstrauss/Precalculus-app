@@ -5,6 +5,15 @@ import ProgressBar from "../ProgressBard";
 import heart from "../../assets/heart.png";
 
 
+/**
+ * `Header` is a React functional component that displays a progress bar and a lives counter.
+ * It shows the user's progress in a quiz or game and the number of lives remaining.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {number} props.progress - The current progress of the user, represented as a decimal.
+ * @param {number} props.lives - The number of lives the user has remaining.
+ * @returns The JSX elements to render the Header.
+ */
 // @ts-ignore
 const Header = ({ progress, lives }) => {
   return (

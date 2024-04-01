@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
+/**
+ * `ProgressBar` is a React functional component that renders a progress bar to visually represent a percentage.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {number} props.progress - The current progress value, expected to be between 0 and 1, where 1 is 100%.
+ * @returns The JSX elements to render the progress bar.
+ */
 // @ts-ignore
 const ProgressBar = ({ progress }) => {
   return (

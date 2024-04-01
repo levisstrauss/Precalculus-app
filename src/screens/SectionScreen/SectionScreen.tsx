@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { TouchableOpacity, StatusBar, Linking, ScrollView } from "react-native";
-import { WebView } from 'react-native-webview';
+import { TouchableOpacity, StatusBar, ScrollView } from "react-native";
 import Markdown from 'react-native-showdown';
 
-
+/**
+ * `SectionScreen` is a React class component that renders the detailed view of a specific section.
+ * This includes a cover image, title, subtitle, caption, and markdown content. It also provides
+ * a close button to return to the previous screen.
+ *
+ * The content of the section is rendered using the `Markdown` component, which converts markdown text
+ * into styled native components.
+ */
 class SectionScreen extends React.Component {
 
   static navigationOptions = {
@@ -17,6 +23,11 @@ class SectionScreen extends React.Component {
   componentWillUnmount() {
     StatusBar.setBarStyle("dark-content", true);
   }
+  /**
+   * Renders the section screen including the cover, markdown content, and a close button.
+   *
+   * @returns The JSX elements to render the Section screen.
+   */
   render() {
     // @ts-ignore
     const { route } = this.props;
@@ -52,18 +63,6 @@ class SectionScreen extends React.Component {
             </CloseView>
           </TouchableOpacity>
           <Content>
-            {/*<WebView*/}
-            {/*  source={{ html: section.content + htmlStyles }}*/}
-            {/*  scalesPageToFit={false}*/}
-            {/*  scrollEnabled={false}*/}
-            {/*  ref="webview"*/}
-            {/*  onNavigationStateChange={(event) => {*/}
-            {/*    if (event.url != 'about:blank' ) {*/}
-            {/*      this.refs.webview.stopLoading();*/}
-            {/*      Linking.openURL(event.url);*/}
-            {/*    }*/}
-            {/*  }}*/}
-            {/*/>*/}
             <Markdown markdown={section.content}
                pureCSS={htmlStyles}
                scalesPageToFit={false}
@@ -135,8 +134,6 @@ const htmlStyles =`
       color: white;  
     }
 `;
-
-
 
 // @ts-ignore
 const Content = styled.View`
