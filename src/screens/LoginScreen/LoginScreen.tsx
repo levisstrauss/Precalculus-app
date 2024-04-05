@@ -9,8 +9,9 @@ import Loading from '../../components/Loading';
 import Success from '../../components/Success';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirebaseApp } from '../../utils/firebaseHelper';
-import Styled from "styled-components";
+import styled from "styled-components/native";
 import { getDatabase, ref, get } from "firebase/database";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // Validation schema
@@ -92,7 +93,7 @@ const LoginScreen = ({ navigation }) => {
   //@ts-ignore
   const mapFirebaseErrorToMessage = (errorCode) => {
     //@ts-ignore
-    return firebaseErrorMessages[errorCode] || 'An unexpected error occurred. Please try again.';
+    return firebaseErrorMessages[errorCode] || 'Wrong email or password. Please try again.';
   };
 
   const handleSignup = () => {
@@ -183,7 +184,7 @@ const LoginScreen = ({ navigation }) => {
             )}
           />
           {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
-          <SubmitButton onPress={handleSubmit(handleLogin)}>
+          <SubmitButton onPress={handleSubmit(handleLogin)} testID="loginButton">
             <ButtonText>Login</ButtonText>
           </SubmitButton>
         </FormContainer>
@@ -206,13 +207,13 @@ const LoginScreen = ({ navigation }) => {
 
 export default LoginScreen;
 // @ts-ignore
-const Container = Styled.View`
+const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
 `;
 
 // @ts-ignore
-const SignupButtonText = Styled.Text`
+const SignupButtonText = styled.Text`
   font-size: 18px;
   color: #546bfb;
   font-weight: bold;
@@ -220,27 +221,27 @@ const SignupButtonText = Styled.Text`
 `;
 
 // @ts-ignore
-const SignupButton = Styled.TouchableOpacity`
+const SignupButton = styled.TouchableOpacity`
   font-size: 18px;
   color: #546bfb;
   font-weight: bold;
 `;
 
 // @ts-ignore
-const SignUpText = Styled.Text`
+const SignUpText = styled.Text`
   font-size: 16px;
   color: grey;
 `;
 
 // @ts-ignore
-const BackgroundImage = Styled.Image`
+const BackgroundImage = styled.Image`
   width: 100%;
   height: 100%;
   position: absolute;
 `;
 
 // @ts-ignore
-const LightImages = Styled.View`
+const LightImages = styled.View`
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
@@ -248,20 +249,20 @@ const LightImages = Styled.View`
 `;
 
 // @ts-ignore
-const ContentWrapper = Styled.View`
+const ContentWrapper = styled.View`
   justify-content: center;
   margin: 15px;
   margin-top: 110%;
 `;
 
 // @ts-ignore
-const FormContainer = Styled.View`
+const FormContainer = styled.View`
   margin-bottom: 20px;
   justify-content: space-between;
 `;
 
 // @ts-ignore
-const StyledInput = Styled.TextInput`
+const StyledInput = styled.TextInput`
   height: 40px;
   margin-bottom: 12px;
   border-width: 1px;
@@ -271,7 +272,7 @@ const StyledInput = Styled.TextInput`
 `;
 
 // @ts-ignore
-const SubmitButton = Styled.TouchableOpacity`
+const SubmitButton = styled.TouchableOpacity`
   background-color: #546bfb;
   padding: 10px;
   align-items: center;
@@ -279,27 +280,27 @@ const SubmitButton = Styled.TouchableOpacity`
 `;
 
 // @ts-ignore
-const ButtonText = Styled.Text`
+const ButtonText = styled.Text`
   color: white;
   font-size: 18px;
   text-align: center;
 `;
 
 // @ts-ignore
-const ErrorMessage = Styled.Text`
+const ErrorMessage = styled.Text`
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 `;
 
 // @ts-ignore
-const Content = Styled.View`
+const Content = styled.View`
   align-items: center;
   margin-bottom: 20px;
 `;
 
 // @ts-ignore
-const SignupContainer = Styled.View`
+const SignupContainer = styled.View`
   margin-top: 20px;
   align-items: center;
   flex-direction: row;

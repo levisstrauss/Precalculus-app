@@ -1,4 +1,4 @@
-import Styled from "styled-components";
+import styled from "styled-components/native";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
 
@@ -56,32 +56,32 @@ export default CustomInput;
 
 
 // @ts-ignore
-const InputContainer = Styled.View`
+const InputContainer = styled.View`
   flex-direction: row;
   align-items: center;
   align-self: stretch;
 `;
 
 // @ts-ignore
-const Label = Styled.Text`
+const Label = styled.Text`
   width: 75px;
 
 `;
 
 // @ts-ignore
-const Content = Styled.View`
+const Content = styled.View`
   flex: 1;
   padding-vertical: 14px;
 `;
 
 // @ts-ignore
-const Input = Styled.TextInput`
+const Input = styled.TextInput`
   border-bottom-width: 1px;
   border-color: ${(props: { error: any; }) => props.error ? '#c60f22' : '#9e9e9e'};
 `;
 
 // @ts-ignore
-const Text = Styled.Text`
+const Text = styled.Text`
   font-size: 12px;
   color: #c60f22;
 `;

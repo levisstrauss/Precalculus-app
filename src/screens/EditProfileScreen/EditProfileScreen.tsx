@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Styled from 'styled-components';
+import styled from 'styled-components/native';
 import { Asset, launchImageLibrary } from "react-native-image-picker";
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, onValue, update} from 'firebase/database';
@@ -87,7 +87,7 @@ const EditProfileScreen = ({navigation}) => {
    * and uploads it to a predefined path in Firebase Storage. Upon successful upload, it retrieves the
    * download URL of the uploaded image and updates the user's profile record in Firebase Realtime Database.
    *
-   * @param {string|URL|Request|undefined} uri - The URI of the image to be uploaded. Can be a string URL, a URL object, or a Request object.
+   * @param {string|URL|Request|undefined} uri - The URI of the image to be uploaded. It Can be a string URL, a URL object, or a Request object.
    * @returns {Promise<void>} A promise that resolves when the image upload and user record update are complete.
    */
   const uploadImage = async (uri: string | URL | Request | undefined): Promise<void> => {
@@ -124,13 +124,13 @@ const EditProfileScreen = ({navigation}) => {
    * it updates the component's state with the new photo and uploads the selected photo to Firebase Storage.
    * This function is triggered when the user wants to change their profile photo.
    *
-   * Uses `launchImageLibrary` from `react-native-image-picker` to open the image library.
+   * Use `launchImageLibrary` from `react-native-image-picker` to open the image library.
    * If a photo is selected and no errors occur, it updates the state with the new photo
    * and calls `uploadImage` to upload the photo to Firebase Storage.
    *
    * @returns {Promise<void>} A promise that resolves when the photo selection and optional upload are complete.
    */
-  const onChangePhoto = async () => {
+  const onChangePhoto = async (): Promise<void> => {
     await launchImageLibrary({ mediaType: 'photo' },
       ({ didCancel, errorCode, errorMessage, assets }) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
@@ -176,7 +176,7 @@ const EditProfileScreen = ({navigation}) => {
         label="Bio"
         multiline
       />
-      <TextButton onPress={handleSubmit(onSubmit)}>Submit</TextButton>
+      <TextButton onPress={handleSubmit(onSubmit)}>Save</TextButton>
     </Container>
   );
 };
@@ -185,13 +185,13 @@ export default EditProfileScreen;
 
 //Stylesheet
 // @ts-ignore
-const Container = Styled.View`
+const Container = styled.View`
   flex: 1;
   align-items: center;
   padding: 20px;
 `;
 // @ts-ignore
-const ProfileImage = Styled.Image`
+const ProfileImage = styled.Image`
   width: 130px;
   height: 130px;
   border-radius: 65px;
@@ -200,14 +200,14 @@ const ProfileImage = Styled.Image`
 `;
 
 // @ts-ignore
-const Text = Styled.Text`
+const Text = styled.Text`
   font-size: 15px;
   color: #1a9be0;
   margin-bottom: 30px;
 `;
 
 // @ts-ignore
-const TextButton = Styled.Text`
+const TextButton = styled.Text`
   font-size: 15px;
   color: #1a9be0;
 `;

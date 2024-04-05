@@ -7,7 +7,7 @@ import { getFirebaseApp } from '../../utils/firebaseHelper';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Styled from 'styled-components';
+import styled from 'styled-components/native';
 import Loading from '../../components/Loading';
 import Success from '../../components/Success';
 // Validation schema
@@ -221,14 +221,14 @@ export default SignupScreen;
 
 
 // @ts-ignore
-const Container = Styled.View`
+const Container = styled.View`
   flex: 1;
   background-color: white;
 `;
 
 
 // @ts-ignore
-const ContentWrapper = Styled.View`
+const ContentWrapper = styled.View`
   justify-content: center;
   margin: 15px;
   margin-top: 95%;
@@ -236,13 +236,13 @@ const ContentWrapper = Styled.View`
 `;
 
 // @ts-ignore
-const BackgroundImage = Styled.Image`
+const BackgroundImage = styled.Image`
   width: 100%;
   height: 100%;
   position: absolute;
 `;
 // @ts-ignore
-const LightImages = Styled.View`
+const LightImages = styled.View`
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
@@ -250,19 +250,19 @@ const LightImages = Styled.View`
 `;
 
 // @ts-ignore
-const Content = Styled.View`
+const Content = styled.View`
   align-items: center;
   margin-bottom: 15px;
 `;
 
 // @ts-ignore
-const FormContainer = Styled.View`
+const FormContainer = styled.View`
      margin-bottom: 10px;
 
 `;
 
 // @ts-ignore
-const StyledInput = Styled.TextInput`
+const StyledInput = styled.TextInput`
   height: 40px;
   margin-bottom: 12px;
   border-width: 1px;
@@ -272,7 +272,7 @@ const StyledInput = Styled.TextInput`
 `;
 
 // @ts-ignore
-const SubmitButton = Styled.TouchableOpacity`
+const SubmitButton = styled.TouchableOpacity`
   background-color: #546bfb;
   padding: 10px;
   align-items: center;
@@ -280,13 +280,13 @@ const SubmitButton = Styled.TouchableOpacity`
 `;
 
 // @ts-ignore
-const ButtonText = Styled.Text`
+const ButtonText = styled.Text`
    color: white;
   font-size: 18px;
 `;
 
 // @ts-ignore
-const SignupContainer = Styled.View`
+const SignupContainer = styled.View`
   margin-top: 15px;
   align-items: center;
   flex-direction: row;
@@ -294,20 +294,20 @@ const SignupContainer = Styled.View`
 `;
 
 // @ts-ignore
-const SignUpText = Styled.Text`
+const SignUpText = styled.Text`
   font-size: 16px;
   color: grey;
 `;
 
 // @ts-ignore
-const SignupButton = Styled.TouchableOpacity`
+const SignupButton = styled.TouchableOpacity`
   font-size: 18px;
   color: #546bfb;
   font-weight: bold;
 `;
 
 // @ts-ignore
-const SignupButtonText = Styled.Text`
+const SignupButtonText = styled.Text`
   font-size: 18px;
   color: #546bfb;
   font-weight: bold;
@@ -315,7 +315,7 @@ const SignupButtonText = Styled.Text`
 `;
 
 // @ts-ignore
-const ErrorMessage = Styled.Text`
+const ErrorMessage = styled.Text`
   color: red;
   font-size: 14px;
   margin-bottom: 10px;

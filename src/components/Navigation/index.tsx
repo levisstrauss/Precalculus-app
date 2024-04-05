@@ -45,7 +45,11 @@ const Navigation = () => {
         <Stack.Screen
           name="Section"
           component={SectionScreen}
-          options={{headerShown: false}}
+          options={{
+                headerShown: true,
+                headerLeft: () => null,
+        }}
+
         />
         <Stack.Screen
           name="QuizDetail"

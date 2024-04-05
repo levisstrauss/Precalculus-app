@@ -1,5 +1,5 @@
 import React from "react";
-import Styled from "styled-components";
+import styled from 'styled-components/native';
 import LottieView from "lottie-react-native";
 import { Animated, Dimensions } from "react-native";
 const screenHeight = Dimensions.get("window").height;
@@ -66,7 +66,7 @@ class Success extends React.Component {
 
 export default Success;
 // @ts-ignore
-const Container = Styled.View`
+const Container = styled.View`
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.9);

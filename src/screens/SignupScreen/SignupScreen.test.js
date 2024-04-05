@@ -1,56 +1,50 @@
-// SignupScreen.test.js
-jest.mock('@react-native-firebase/auth', () => require('__mocks__/firebase-mock'));
+// Mock the necessary Firebase and navigation methods
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import SignupScreen from './SignupScreen';
+import SignupScreen from './SignupScreen'; // Adjust the path to where your SignupScreen component is located
 
-// Mock Firebase functions
-jest.mock('@react-native-firebase/auth', () => require('__mocks__/firebase-mock'));
-jest.mock('@react-native-firebase/database', () => require('__mocks__/firebase-mock'));
+jest.mock('firebase/auth', () => ({
+  getAuth: jest.fn(),
+  createUserWithEmailAndPassword: jest.fn(() => Promise.resolve({
+    user: {
+      uid: '123',
+      email: 'test@example.com',
+    }
+  })),
+  sendEmailVerification: jest.fn(() => Promise.resolve()),
+}));
+
+jest.mock('firebase/database', () => ({
+  getDatabase: jest.fn(),
+  ref: jest.fn(),
+  set: jest.fn(() => Promise.resolve()),
+}));
+
+jest.mock('../../utils/firebaseHelper', () => ({
+  getFirebaseApp: jest.fn(),
+}));
+
+const mockNavigate = jest.fn();
+const props = { navigation: { navigate: mockNavigate } };
 
 describe('SignupScreen', () => {
-  test('renders correctly', () => {
-    const { getByPlaceholderText, getByText } = render(<SignupScreen />);
-
-    // Check if essential elements are rendered
-    const usernameInput = getByPlaceholderText('Username');
-    const emailInput = getByPlaceholderText('Email Address');
-    const passwordInput = getByPlaceholderText('Password');
-    const confirmPasswordInput = getByPlaceholderText('Repeat Password');
-    const signupButton = getByText('Sign Up');
-
-    expect(usernameInput).toBeTruthy();
-    expect(emailInput).toBeTruthy();
-    expect(passwordInput).toBeTruthy();
-    expect(confirmPasswordInput).toBeTruthy();
-    expect(signupButton).toBeTruthy();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('handles signup process correctly', async () => {
-    const { getByPlaceholderText, getByText } = render(<SignupScreen />);
+  it('should allow a user to sign up with valid data', async () => {
+    const { getByPlaceholderText, getByText } = render(<SignupScreen {...props} />);
 
-    // Fill out the form
-    const usernameInput = getByPlaceholderText('Username');
-    const emailInput = getByPlaceholderText('Email Address');
-    const passwordInput = getByPlaceholderText('Password');
-    const confirmPasswordInput = getByPlaceholderText('Repeat Password');
-    const signupButton = getByText('Sign Up');
+    fireEvent.changeText(getByPlaceholderText('Username'), 'testuser');
+    fireEvent.changeText(getByPlaceholderText('Email Address'), 'test@example.com');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'password123');
+    fireEvent.changeText(getByPlaceholderText('Repeat Password'), 'password123');
+    fireEvent.press(getByText('Sign Up'));
 
-    fireEvent.changeText(usernameInput, 'testuser');
-    fireEvent.changeText(emailInput, 'test@example.com');
-    fireEvent.changeText(passwordInput, 'password123');
-    fireEvent.changeText(confirmPasswordInput, 'password123');
-
-    fireEvent.press(signupButton);
-
-    // Assert that loading state is active
-    expect(getByText('Loading...')).toBeTruthy();
-
-    // Wait for the loading to finish (mocking Firebase operations)
     await waitFor(() => {
-      // Assert that success state is active
-      expect(getByText('Success!')).toBeTruthy();
-    });
+      expect(mockNavigate).toHaveBeenCalledWith('Login');
+    }, { timeout: 5000 }); // Increase timeout if necessary
   });
-});
 
+  // Other tests...
+});

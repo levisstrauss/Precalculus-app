@@ -1,5 +1,5 @@
 import React from "react";
-import Styled from "styled-components";
+import styled from "styled-components/native";
 import {TouchableOpacity} from "react-native";
 import Animated, {FadeInUp} from "react-native-reanimated";
 
@@ -16,26 +16,29 @@ import Animated, {FadeInUp} from "react-native-reanimated";
  * @returns The JSX for the GettingStartedScreen component.
  */
 // @ts-ignore
-const GettingStartedScreen = ({ navigation }) => {
+interface GettingStartedScreenProps {
+  navigation: {
+    push: (screen: string) => void;
+  };
+}
+
+const GettingStartedScreen: React.FC<GettingStartedScreenProps> = ({ navigation }) => {
   const handlePress = () => {
     navigation.push('Login');
-  }
+  };
+
   return (
     <Container>
       <Content>
         <Animated.Image
           source={require("../../assets/getting-started.png")}
-          style={{width: "100%", marginTop: "40%"}}
-          entering={
-            FadeInUp.delay(200)
-              .duration(1000)
-              .springify()
-          }
+          style={{ width: '100%', marginTop: '40%' }}
+          entering={FadeInUp.delay(200).duration(1000).springify()}
         />
         <Animated.Text
           style={{
             fontSize: 30,
-            fontWeight: "600",
+            fontWeight: '600',
             marginBottom: 10,
           }}
           entering={FadeInUp.duration(1000).springify()}
@@ -45,8 +48,8 @@ const GettingStartedScreen = ({ navigation }) => {
         <Animated.Text
           style={{
             fontSize: 20,
-            color: "#606060",
-            textAlign: "center",
+            color: '#606060',
+            textAlign: 'center',
             marginHorizontal: 20,
             marginBottom: 30,
           }}
@@ -55,22 +58,22 @@ const GettingStartedScreen = ({ navigation }) => {
           Learn pre-{'\n'}calculus concepts
         </Animated.Text>
         <Animated.Text
-        style={{
-          fontStyle: "italic",
-          fontSize: 16,
-          color: "#606060",
-          textAlign: "center",
-          marginHorizontal: 20,
-          marginBottom: 30,
-        }}
-        entering={FadeInUp.duration(1000).springify()}
+          style={{
+            fontStyle: 'italic',
+            fontSize: 16,
+            color: '#606060',
+            textAlign: 'center',
+            marginHorizontal: 20,
+            marginBottom: 30,
+          }}
+          entering={FadeInUp.duration(1000).springify()}
         >
           "Mathematics is the most beautiful and most powerful creation of the human spirit." – Stefan Banach
         </Animated.Text>
         <Animated.View entering={FadeInUp.delay(600).duration(1000).springify()}>
-        <Button onPress={handlePress}>
-          <ButtonText>Get Started</ButtonText>
-        </Button>
+          <Button onPress={handlePress}>
+            <ButtonText>Get Started</ButtonText>
+          </Button>
         </Animated.View>
       </Content>
     </Container>
@@ -80,19 +83,19 @@ const GettingStartedScreen = ({ navigation }) => {
 export default GettingStartedScreen;
 
 // @ts-ignore
-const Container = Styled.View`
+const Container = styled.View`
     flex: 1;
     background-color: #ffffff;
 `;
 
 // @ts-ignore
-const Content = Styled.View`
+const Content = styled.View`
     justify-content: center;
     align-items: center;
     color: black;
 `;
 
-const Button = Styled(TouchableOpacity)`
+const Button = styled(TouchableOpacity)`
     background-color: #546bfb;
     padding-vertical: 12px;
     padding-horizontal: 130px;
@@ -103,7 +106,7 @@ const Button = Styled(TouchableOpacity)`
 `;
 
 // @ts-ignore
-const ButtonText = Styled.Text`
+const ButtonText = styled.Text`
     color: white;
     font-size: 16px;
     text-align: center;

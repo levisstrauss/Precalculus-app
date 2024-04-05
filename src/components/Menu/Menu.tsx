@@ -12,8 +12,6 @@ const screenHeight = Dimensions.get("window").height;
 import { getAuth, signOut } from "firebase/auth";
 import { getFirebaseApp } from "../../utils/firebaseHelper";
 import { UserContext } from "../../UserContext/UserContext";
-
-
 /**
  * `Menu` is a React functional component that provides a slide-in menu with user options.
  * It uses animations to slide in and out of view and displays user-related information and menu items.

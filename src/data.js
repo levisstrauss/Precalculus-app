@@ -1708,11 +1708,6 @@ const quizzes = [
       }
     ]
   },
-
-
-
-
-
   {
     id: '4',
     title: 'Rational Functions',

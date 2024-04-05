@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Styled from "styled-components/native";
+import styled from "styled-components/native";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, onValue } from "firebase/database";
 
@@ -37,7 +37,7 @@ const Avatar = () => {
 
 export default Avatar;
 
-const Image = Styled.Image`
+const Image = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 30px;

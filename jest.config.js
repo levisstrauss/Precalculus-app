@@ -1,3 +1,11 @@
 module.exports = {
   preset: 'react-native',
+  transform: {
+    '^.+\\.[tj]sx?$': 'babel-jest'
+  },
+  transformIgnorePatterns: [
+    "node_modules/(?!react-native|react-native-reanimated)/"
+  ],
+  setupFiles: ['<rootDir>/jest.setup.js'],
 };
+

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animated, Easing, SafeAreaView, ScrollView, TouchableOpacity, StatusBar, ImageSourcePropType } from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Menu from "../../components/Menu";
 import Logo from "../../components/Logo/Logo";
