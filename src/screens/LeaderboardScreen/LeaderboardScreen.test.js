@@ -36,6 +36,5 @@ describe('LeaderboardScreen', () => {
     expect(await findByText('100')).toBeTruthy();
     expect(await findByText('User 2')).toBeTruthy();
     expect(await findByText('90')).toBeTruthy();
-    // Add more assertions as necessary
   });
 });

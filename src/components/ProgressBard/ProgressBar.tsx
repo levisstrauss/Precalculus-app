@@ -9,7 +9,7 @@ import styled from "styled-components";
  * @returns The JSX elements to render the progress bar.
  */
 // @ts-ignore
-const ProgressBar = ({ progress }) => {
+const ProgressBar = ({ progress }: { progress: number; }) => {
   return (
     <Container>
       <Content style={{ width: `${progress * 100}%` }}>

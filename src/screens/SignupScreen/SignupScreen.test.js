@@ -1,7 +1,9 @@
 // Mock the necessary Firebase and navigation methods
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import SignupScreen from './SignupScreen'; // Adjust the path to where your SignupScreen component is located
+import SignupScreen from './SignupScreen';
+import { beforeEach, describe, it } from "@jest/globals";
+import expect from "expect"; // Adjust the path to where your SignupScreen component is located
 
 jest.mock('firebase/auth', () => ({
   getAuth: jest.fn(),
@@ -45,6 +47,4 @@ describe('SignupScreen', () => {
       expect(mockNavigate).toHaveBeenCalledWith('Login');
     }, { timeout: 5000 }); // Increase timeout if necessary
   });
-
-  // Other tests...
 });

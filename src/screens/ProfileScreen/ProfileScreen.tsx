@@ -3,7 +3,6 @@ import Styled from 'styled-components';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, onValue, query, orderByChild, limitToLast } from 'firebase/database';
 
-
 /**
  * `ProfileScreen` is a React functional component that displays the user's profile information,
  * including their username, location, bio, profile picture, and statistics like quizzes completed,

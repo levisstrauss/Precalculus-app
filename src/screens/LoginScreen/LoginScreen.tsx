@@ -13,13 +13,11 @@ import styled from "styled-components/native";
 import { getDatabase, ref, get } from "firebase/database";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 // Validation schema
 const schema = yup.object().shape({
   email: yup.string().email('Please enter a valid email address').required('Email is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters long').required('Password is required'),
 });
-
 
 /**
  * `LoginScreen` is a React functional component that provides a user interface

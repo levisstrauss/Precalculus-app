@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import  styled from 'styled-components/native';
 import { getDatabase, ref, query, orderByChild, limitToLast, onValue } from 'firebase/database';
 
-
+/**
+ * `LeaderboardScreen` is a React functional component that displays a leaderboard
+ * showing the top users based on their points. It fetches and listens to real-time
+ * updates from Firebase's Realtime Database.
+ *
+ * @returns The LeaderboardScreen component's JSX elements.
+ */
 const LeaderboardScreen = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   useEffect(() => {
@@ -60,14 +66,6 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
 `;
-
-/**
- * `LeaderboardScreen` is a React functional component that displays a leaderboard
- * showing the top users based on their points. It fetches and listens to real-time
- * updates from Firebase's Realtime Database.
- *
- * @returns The LeaderboardScreen component's JSX elements.
- */
 
 const LeaderboardList = styled.FlatList`
   width: 100%;

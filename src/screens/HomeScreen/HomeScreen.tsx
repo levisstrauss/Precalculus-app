@@ -68,7 +68,6 @@ function mapDispatchToProps(dispatch) {
  *
  * @extends React.Component
  */
-
 class HomeScreen extends React.Component {
   state = {
     scale: new Animated.Value(1),

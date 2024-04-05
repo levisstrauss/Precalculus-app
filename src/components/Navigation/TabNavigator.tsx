@@ -6,6 +6,13 @@ import HomeScreen from "../../screens/HomeScreen";
 import BadgeScreen from "../../screens/CoursesScreen";
 const Tab = createBottomTabNavigator();
 
+/**
+ * TabNavigator creates the bottom tab navigation for the app.
+ * It includes four main screens: Home, Badges, Quizzes, and Leaderboard.
+ * Each tab is associated with an icon from MaterialIcons.
+ *
+ * @returns {JSX.Element} The bottom tab navigator with the defined screens and options.
+ */
 const TabNavigator = () => {
   return (
     <Tab.Navigator>

@@ -13,7 +13,6 @@ import Markdown from 'react-native-showdown';
  * into styled native components.
  */
 class SectionScreen extends React.Component {
-
   static navigationOptions = {
     header: null
   };

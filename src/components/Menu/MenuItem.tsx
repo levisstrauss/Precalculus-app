@@ -8,7 +8,6 @@ interface MenuItemProps {
   text: string;
 }
 
-
 /**
  * `MenuItem` is a React functional component that displays an interactive menu item.
  * It consists of an icon, a title, and a short text. When pressed, it triggers an action defined by the `onPress` prop.

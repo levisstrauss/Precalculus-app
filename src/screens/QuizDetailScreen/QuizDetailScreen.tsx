@@ -29,7 +29,6 @@ interface QuizDetailRouteParams {
  *
  * @returns The JSX elements to render the QuizDetail screen.
  */
-
 const QuizDetailScreen = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const navigation = useNavigation();

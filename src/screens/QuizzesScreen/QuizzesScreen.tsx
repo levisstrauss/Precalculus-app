@@ -25,7 +25,6 @@ const correctSound = new Sound('correct.mp3', Sound.MAIN_BUNDLE, (error) => {
   // Sound is loaded successfully
 });
 
-
 /**
  * `QuizzesScreen` is a React functional component that displays a list of quizzes.
  * Each quiz can be clicked to navigate to its detailed view. The quizzes are fetched

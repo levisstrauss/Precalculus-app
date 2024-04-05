@@ -3,6 +3,14 @@ import styled from "styled-components/native";
 import {TouchableOpacity} from "react-native";
 import Animated, {FadeInUp} from "react-native-reanimated";
 
+
+// @ts-ignore
+interface GettingStartedScreenProps {
+  navigation: {
+    push: (screen: string) => void;
+  };
+}
+
 /**
  * `GettingStartedScreen` is a React component that serves as the introductory screen
  * for a Pre-Calculus learning application. It displays a welcome message, a motivational quote,
@@ -15,13 +23,6 @@ import Animated, {FadeInUp} from "react-native-reanimated";
  * @param {Object} props.navigation - The navigation prop used for navigating to other screens.
  * @returns The JSX for the GettingStartedScreen component.
  */
-// @ts-ignore
-interface GettingStartedScreenProps {
-  navigation: {
-    push: (screen: string) => void;
-  };
-}
-
 const GettingStartedScreen: React.FC<GettingStartedScreenProps> = ({ navigation }) => {
   const handlePress = () => {
     navigation.push('Login');

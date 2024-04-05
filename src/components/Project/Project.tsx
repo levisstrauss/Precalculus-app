@@ -14,10 +14,18 @@ import {connect } from "react-redux";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const tabBarHeight = 25;  // Fixed height of the tab bar later on
+
+/**
+ * Maps state to component props
+ */
 function mapStateToProps(state: any) {
   return { action: state.action };
 }
 
+
+/**
+ * Maps dispatch actions to component props
+ */
 function mapDispatchToProps(dispatch: any) {
   return {
     openCard: () =>
@@ -31,6 +39,10 @@ function mapDispatchToProps(dispatch: any) {
   };
 }
 
+/**
+ * `Project` component renders a project card that can be expanded to full screen.
+ * It animates the card expansion and provides a detailed view of the project content.
+ */
 class Project extends React.Component {
   state = {
     cardWidth: new Animated.Value(315),
@@ -40,6 +52,9 @@ class Project extends React.Component {
     textHeight: new Animated.Value(100)
   }
 
+  /**
+   * Expands the card to full screen while animating various elements.
+   */
   openCard = () => {
     // @ts-ignore
     if (!this.props.canOpen) return;
@@ -54,6 +69,9 @@ class Project extends React.Component {
     this.props.openCard();
   }
 
+  /**
+   * Closes the card to its original size while animating various elements.
+   */
   closeCard = () => {
     Animated.spring(this.state.cardWidth, { toValue: 315, useNativeDriver: false }).start();
     Animated.spring(this.state.cardHeight, { toValue: 460, useNativeDriver: false }).start();

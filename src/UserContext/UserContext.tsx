@@ -4,6 +4,14 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 
 export const UserContext = createContext(null);
 
+/**
+ * `UserProvider` is a component that provides user data to its children components.
+ * It listens for authentication state changes and fetches user profile data from Firebase.
+ *
+ * @param {Object} props - The properties passed to the UserProvider component.
+ * @param {React.ReactNode} props.children - The child components of the UserProvider.
+ * @returns {JSX.Element} A context provider wrapping the child components.
+ */
 // @ts-ignore
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
